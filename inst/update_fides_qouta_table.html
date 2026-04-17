@@ -10,6 +10,7 @@
 
 
 
+<meta name="date" content="2024-05-29" />
 
 <title>update_fides_qouta_table</title>
 
@@ -349,13 +350,26 @@ display: none;
 
 
 <h1 class="title toc-ignore">update_fides_qouta_table</h1>
+<h4 class="date">2024-05-29</h4>
 
 </div>
 
 
-<p>** NOTE ** The fides qouta file is considered confidential, so the
-detailed files should never be pushed to GitHub</p>
+<p><strong>NOTE:</strong> The fides quota file is considered
+confidential, so the detailed files should never be pushed to GitHub</p>
 <p>It is ok to push this overview to GitHub</p>
+<pre class="r"><code>knitr::opts_chunk$set(echo = T)
+
+library(readxl)
+library(dplyr)
+library(data.table)
+
+years_to_update &lt;- c(2023)
+
+path &lt;- &quot;Q:/mynd/kibi/projects_wks_wgs_rcgs/ISSG_RWP/2024/table_2_1_development/personal/input/fides/&quot;
+
+filename_old &lt;- &quot;quota_2018_2022.csv&quot;
+filename_new &lt;- &quot;Quota_2023_10_4_2024.xlsx&quot;</code></pre>
 <pre class="r"><code># Get data
 
 old &lt;- read.csv(paste0(path, filename_old), sep = &quot;;&quot;)
@@ -392,71 +406,60 @@ names(old)</code></pre>
 ## [16] &quot;compute_uptake&quot;    &quot;comment&quot;</code></pre>
 <pre class="r"><code># Select only varibles already in old file
 
-names_old &lt;- names(old)
-new_1 &lt;- select(new, one_of(names_old))
+# names_old &lt;- names(old)
+# new_1 &lt;- select(new, one_of(names_old))
 
 
-names(old)</code></pre>
-<pre><code>##  [1] &quot;definition_year&quot;  &quot;species_code&quot;     &quot;area_code&quot;        &quot;level_code&quot;      
-##  [5] &quot;initial_quantity&quot; &quot;adapted_quota&quot;    &quot;eurlex_ref&quot;       &quot;oj_ref&quot;          
-##  [9] &quot;publication_date&quot; &quot;page_number&quot;      &quot;in_regulation&quot;    &quot;compute_uptake&quot;  
-## [13] &quot;comment&quot;</code></pre>
-<pre class="r"><code>names(new_1)</code></pre>
-<pre><code>##  [1] &quot;definition_year&quot;  &quot;species_code&quot;     &quot;area_code&quot;        &quot;level_code&quot;      
-##  [5] &quot;initial_quantity&quot; &quot;adapted_quota&quot;    &quot;eurlex_ref&quot;       &quot;oj_ref&quot;          
-##  [9] &quot;publication_date&quot; &quot;page_number&quot;      &quot;in_regulation&quot;    &quot;compute_uptake&quot;  
-## [13] &quot;comment&quot;</code></pre>
-<pre class="r"><code># Subset files on years, so only the right years are updated
+# names(old)
+# names(new_1)
+
+# Subset files on years, so only the right years are updated
 
 distinct(old, definition_year)</code></pre>
 <pre><code>##   definition_year
 ## 1            2021
 ## 2            2020
 ## 3            2019
-## 4            2018</code></pre>
+## 4            2018
+## 5            2022</code></pre>
 <pre class="r"><code>distinct(new, definition_year)</code></pre>
 <pre><code>## # A tibble: 1 × 1
 ##   definition_year
 ##             &lt;dbl&gt;
-## 1            2022</code></pre>
+## 1            2023</code></pre>
 <pre class="r"><code>old_1 &lt;- subset(old, !(definition_year %in% years_to_update))
+old_1$initial_quantity &lt;- as.numeric(old_1$initial_quantity)
+old_1$adapted_quota &lt;- as.numeric(old_1$adapted_quota)
+old_1$publication_date &lt;- as.Date(old_1$publication_date)
 
-new_2 &lt;- subset(new_1, (definition_year %in% years_to_update))
+new_2 &lt;- subset(new, (definition_year %in% years_to_update))
+new_2$initial_quantity &lt;- as.numeric(new_2$initial_quantity)
+new_2$adapted_quota &lt;- as.numeric(new_2$adapted_quota)
+new_2$page_number &lt;- as.numeric(new_2$page_number)
 
 # Combine files
 
-final &lt;- rbind(old_1, new_2)
+final &lt;- dplyr::bind_rows(old_1, new_2)
+
+# There are quotas where the initial amount is NA for all countries - replaced by 0
+final$initial_quantity[is.na(final$initial_quantity)] &lt;- 0
+
+na_quantity &lt;- subset(final, is.na(initial_quantity))
 
 # Save file
 
 unique(final$definition_year)</code></pre>
-<pre><code>## [1] 2021 2020 2019 2018 2022</code></pre>
+<pre><code>## [1] 2021 2020 2019 2018 2022 2023</code></pre>
 <pre class="r"><code>write.table(
   final,
-  paste(path, &quot;fides_quota_2018_&quot;, max(years_to_update), &quot;.csv&quot;),
+  paste0(path, &quot;fides_quota_2018_&quot;, max(years_to_update), &quot;.csv&quot;),
   row.names = F,
   sep = &quot;;&quot;
+)
+saveRDS(
+  final,
+  paste0(path, &quot;fides_quota_2018_&quot;, max(years_to_update), &quot;.rds&quot;)
 )</code></pre>
-<pre class="r"><code># Curious - do the number of quotas shift over the years?
-
-summarise(group_by(final, definition_year), no_qoutas = length(unique(paste(
-  species_code, area_code
-))))</code></pre>
-<pre><code>## # A tibble: 5 × 2
-##   definition_year no_qoutas
-##             &lt;dbl&gt;     &lt;int&gt;
-## 1            2018       435
-## 2            2019       428
-## 3            2020       410
-## 4            2021       464
-## 5            2022       672</code></pre>
-<pre class="r"><code># There are many more quotas in 2022 - UK? - yes - we need to add all the UK quotas to the linkage file :-(
-
-# What quotas shift over the years?
-
-final$quota &lt;- paste0(final$species_code, final$area_code)
-
-uniq_quota &lt;- distinct(final, quota)</code></pre>
 
 
 
