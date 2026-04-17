@@ -1,45 +1,17 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://ob7-ird.github.io/rwptool/404.html</loc>
-  </url>
-  <url>
-    <loc>https://ob7-ird.github.io/rwptool/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://ob7-ird.github.io/rwptool/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://ob7-ird.github.io/rwptool/articles/rwp_table_2_1_generation.html</loc>
-  </url>
-  <url>
-    <loc>https://ob7-ird.github.io/rwptool/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://ob7-ird.github.io/rwptool/index.html</loc>
-  </url>
-  <url>
-    <loc>https://ob7-ird.github.io/rwptool/reference/global_load_cl_landing_rdb_data.html</loc>
-  </url>
-  <url>
-    <loc>https://ob7-ird.github.io/rwptool/reference/global_load_cl_landing_rdbes_data.html</loc>
-  </url>
-  <url>
-    <loc>https://ob7-ird.github.io/rwptool/reference/global_load_eurostat_data.html</loc>
-  </url>
-  <url>
-    <loc>https://ob7-ird.github.io/rwptool/reference/global_load_fides_data.html</loc>
-  </url>
-  <url>
-    <loc>https://ob7-ird.github.io/rwptool/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://ob7-ird.github.io/rwptool/reference/pipe.html</loc>
-  </url>
-  <url>
-    <loc>https://ob7-ird.github.io/rwptool/reference/rwp_table_2_1_template.html</loc>
-  </url>
-  <url>
-    <loc>https://ob7-ird.github.io/rwptool/reference/rwptool-package.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://ob7-ird.github.io/rwptool/404.html</loc></url>
+<url><loc>https://ob7-ird.github.io/rwptool/LICENSE-text.html</loc></url>
+<url><loc>https://ob7-ird.github.io/rwptool/articles/index.html</loc></url>
+<url><loc>https://ob7-ird.github.io/rwptool/articles/rwp_table_2_1_generation.html</loc></url>
+<url><loc>https://ob7-ird.github.io/rwptool/authors.html</loc></url>
+<url><loc>https://ob7-ird.github.io/rwptool/index.html</loc></url>
+<url><loc>https://ob7-ird.github.io/rwptool/reference/global_load_cl_landing_rdb_data.html</loc></url>
+<url><loc>https://ob7-ird.github.io/rwptool/reference/global_load_cl_landing_rdbes_data.html</loc></url>
+<url><loc>https://ob7-ird.github.io/rwptool/reference/global_load_eurostat_data.html</loc></url>
+<url><loc>https://ob7-ird.github.io/rwptool/reference/global_load_fides_data.html</loc></url>
+<url><loc>https://ob7-ird.github.io/rwptool/reference/index.html</loc></url>
+<url><loc>https://ob7-ird.github.io/rwptool/reference/pipe.html</loc></url>
+<url><loc>https://ob7-ird.github.io/rwptool/reference/rwp_table_2_1_template.html</loc></url>
+<url><loc>https://ob7-ird.github.io/rwptool/reference/rwptool-package.html</loc></url>
 </urlset>
+
