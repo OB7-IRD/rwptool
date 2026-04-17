@@ -1,30 +1,30 @@
 ---
 title: "update_fides_qouta_table"
+date: "`r Sys.Date()`"
 output: html_document
 ---
 
-** NOTE **
-The fides qouta file is considered confidential, so the detailed files should never be pushed to GitHub
+**NOTE:**
+The fides quota file is considered confidential, so the detailed files should never be pushed to GitHub
 
 It is ok to push this overview to GitHub
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r setup, include=T, message = F, warning = F}
+knitr::opts_chunk$set(echo = T)
 
 library(readxl)
 library(dplyr)
+library(data.table)
 
-years_to_update <- c(2022)
+years_to_update <- c(2023)
 
-path <- "Q:/mynd/kibi/projects_wks_wgs_rcgs/ISSG_RWP/2022/table_2_1_development/personal/input/fides/"
+path <- "Q:/mynd/kibi/projects_wks_wgs_rcgs/ISSG_RWP/2024/table_2_1_development/personal/input/fides/"
 
-filename_old <- "export_quota_20220204tl.csv"
-filename_new <- "export_quota_15_3_2023__9_26_21_PRODUCTION.xlsx"
-
+filename_old <- "quota_2018_2022.csv"
+filename_new <- "Quota_2023_10_4_2024.xlsx"
 ```
 
 ```{r}
-
 # Get data
 
 old <- read.csv(paste0(path, filename_old), sep = ";")
@@ -43,12 +43,12 @@ names(new)
 
 # Select only varibles already in old file
 
-names_old <- names(old)
-new_1 <- select(new, one_of(names_old))
+# names_old <- names(old)
+# new_1 <- select(new, one_of(names_old))
 
 
-names(old)
-names(new_1)
+# names(old)
+# names(new_1)
 
 # Subset files on years, so only the right years are updated
 
@@ -57,12 +57,18 @@ distinct(old, definition_year)
 distinct(new, definition_year)
 
 old_1 <- subset(old, !(definition_year %in% years_to_update))
+old_1$initial_quantity <- as.numeric(old_1$initial_quantity)
+old_1$adapted_quota <- as.numeric(old_1$adapted_quota)
+old_1$publication_date <- as.Date(old_1$publication_date)
 
-new_2 <- subset(new_1, (definition_year %in% years_to_update))
+new_2 <- subset(new, (definition_year %in% years_to_update))
+new_2$initial_quantity <- as.numeric(new_2$initial_quantity)
+new_2$adapted_quota <- as.numeric(new_2$adapted_quota)
+new_2$page_number <- as.numeric(new_2$page_number)
 
 # Combine files
 
-final <- rbind(old_1, new_2)
+final <- dplyr::bind_rows(old_1, new_2)
 
 # There are quotas where the initial amount is NA for all countries - replaced by 0
 final$initial_quantity[is.na(final$initial_quantity)] <- 0
@@ -79,26 +85,8 @@ write.table(
   row.names = F,
   sep = ";"
 )
-
+saveRDS(
+  final,
+  paste0(path, "fides_quota_2018_", max(years_to_update), ".rds")
+)
 ```
-
-```{r}
-
-# Curious - do the number of quotas shift over the years?
-
-summarise(group_by(final, definition_year), no_qoutas = length(unique(paste(
-  species_code, area_code
-))))
-
-# There are many more quotas in 2022 - UK? - yes - we need to add all the UK quotas to the linkage file :-(
-
-# What quotas shift over the years?
-
-final$quota <- paste0(final$species_code, final$area_code)
-
-uniq_quota <- distinct(final, quota)
-
-
-
-```
-
