@@ -1,0 +1,3483 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Kirsten Birch Håkansson, DTU Aqua" />
+
+<meta name="date" content="2024-05-31" />
+
+<title>Maintaining table 2.1 linkage file, 2024</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Maintaining table 2.1 linkage file,
+2024</h1>
+<h4 class="author">Kirsten Birch Håkansson, DTU Aqua</h4>
+<h4 class="date">2024-05-31</h4>
+
+
+<div id="TOC">
+<ul>
+<li><a href="#notes-for-maintainers" id="toc-notes-for-maintainers">Notes for maintainers</a>
+<ul>
+<li><a href="#requirements" id="toc-requirements">Requirements</a></li>
+</ul></li>
+<li><a href="#focus" id="toc-focus">Focus</a></li>
+<li><a href="#versions" id="toc-versions">Versions</a>
+<ul>
+<li><a href="#v2.4" id="toc-v2.4">2022_v2.4</a></li>
+<li><a href="#v1.3" id="toc-v1.3">2024_v1.3</a></li>
+<li><a href="#v1.4" id="toc-v1.4">2024_v1.4</a></li>
+</ul></li>
+<li><a href="#linkage-additions-corrections-part-1" id="toc-linkage-additions-corrections-part-1">Linkage additions /
+corrections part 1</a>
+<ul>
+<li><a href="#corrections" id="toc-corrections">Corrections</a></li>
+</ul></li>
+<li><a href="#additions" id="toc-additions">Additions</a>
+<ul>
+<li><a href="#extra-lines-for-stocks-where-the-qouta-is-on-higher-taxonomical-level" id="toc-extra-lines-for-stocks-where-the-qouta-is-on-higher-taxonomical-level">Extra
+lines for ‘stocks’ where the qouta is on higher taxonomical
+level</a></li>
+<li><a href="#extra-lines-for-stocks-with-quota" id="toc-extra-lines-for-stocks-with-quota">Extra lines for ‘stocks’ with
+quota</a></li>
+<li><a href="#fixing-overlapping-stocks" id="toc-fixing-overlapping-stocks">Fixing overlapping stocks</a></li>
+<li><a href="#recode-all-areas-to-proper-areas" id="toc-recode-all-areas-to-proper-areas">Recode ‘All areas’ to proper
+areas</a></li>
+<li><a href="#known-issues---not-to-be-displayed-in-table-2.1-control-file" id="toc-known-issues---not-to-be-displayed-in-table-2.1-control-file">Known
+issues - not to be displayed in table 2.1 | control file</a></li>
+</ul></li>
+<li><a href="#areas" id="toc-areas">Areas</a>
+<ul>
+<li><a href="#correct-fides_area" id="toc-correct-fides_area">Correct
+fides_area</a></li>
+<li><a href="#check-and-correct-area_bis" id="toc-check-and-correct-area_bis">Check and correct area_bis</a></li>
+<li><a href="#check-and-correct-area_rdb" id="toc-check-and-correct-area_rdb">Check and correct area_rdb</a>
+<ul>
+<li><a href="#notes-from-2023" id="toc-notes-from-2023">Notes from
+2023</a></li>
+</ul></li>
+<li><a href="#check-and-correct-area_rdbes" id="toc-check-and-correct-area_rdbes">Check and correct
+area_rdbes</a></li>
+</ul></li>
+<li><a href="#linkage-additions-part-2" id="toc-linkage-additions-part-2">Linkage additions part 2</a></li>
+<li><a href="#species" id="toc-species">Species</a>
+<ul>
+<li><a href="#latin_name_join" id="toc-latin_name_join">latin_name_join</a>
+<ul>
+<li><a href="#remove-blanks" id="toc-remove-blanks">Remove
+blanks</a></li>
+<li><a href="#fixed-outdated-scientific-names-and-aphiaids" id="toc-fixed-outdated-scientific-names-and-aphiaids">Fixed outdated
+scientific names and aphiaid’s</a></li>
+<li><a href="#group-of-species" id="toc-group-of-species">Group of
+species</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#quotas" id="toc-quotas">Quotas</a>
+<ul>
+<li><a href="#add-missing-quotas" id="toc-add-missing-quotas">Add
+missing quotas</a></li>
+<li><a href="#x3a_code" id="toc-x3a_code">x3a_code</a>
+<ul>
+<li><a href="#remove-blanks-1" id="toc-remove-blanks-1">Remove
+blanks</a></li>
+</ul></li>
+<li><a href="#quotas-area-in-linkage-not-in-fides" id="toc-quotas-area-in-linkage-not-in-fides">Quotas area in linkage not
+in fides</a>
+<ul>
+<li><a href="#remove-blanks-2" id="toc-remove-blanks-2">Remove
+blanks</a></li>
+<li><a href="#correct-misspellings" id="toc-correct-misspellings">Correct misspellings</a></li>
+<li><a href="#checking-for-misspellings" id="toc-checking-for-misspellings">Checking for misspellings</a></li>
+</ul></li>
+<li><a href="#quotas-in-fides-not-linkage-and-the-other-way-around" id="toc-quotas-in-fides-not-linkage-and-the-other-way-around">Quotas in
+fides not linkage and the other way around</a></li>
+</ul></li>
+<li><a href="#output" id="toc-output">Output</a></li>
+</ul>
+</div>
+
+<div id="notes-for-maintainers" class="section level1">
+<h1>Notes for maintainers</h1>
+<p>Some of the , so</p>
+<div id="requirements" class="section level2">
+<h2>Requirements</h2>
+</div>
+</div>
+<div id="focus" class="section level1">
+<h1>Focus</h1>
+<p>In 2024 the focus has been on data from area 27</p>
+</div>
+<div id="versions" class="section level1">
+<h1>Versions</h1>
+<div id="v2.4" class="section level2">
+<h2>2022_v2.4</h2>
+<p>Linkage file from 2023. This file is used as the inputs to all the
+amendments made in 2024</p>
+</div>
+<div id="v1.3" class="section level2">
+<h2>2024_v1.3</h2>
+<p>Linkage file from 2024. This version was used to create the table 2.1
+sent to NC’s for review the 20th of May 2024.</p>
+<p>Main improvements:</p>
+<ol style="list-style-type: decimal">
+<li><p>Checking and correcting areas</p></li>
+<li><p>Fixed outdated scientific names and aphiaid’s</p></li>
+<li><p>Fixed groups of species</p></li>
+</ol>
+</div>
+<div id="v1.4" class="section level2">
+<h2>2024_v1.4</h2>
+<p>Linkage file used to create table 2.1 the 30th of May.</p>
+<p>Main improvements:</p>
+<ol style="list-style-type: decimal">
+<li><p>Checking and correcting quotas</p></li>
+<li><p>Started to Fix overlapping stocks, but I’m unsure about a lot of
+them, so not done.</p></li>
+<li><p>Adding extra lines for Caproidae, Sebastes and Trachurus, so
+there is a line on a higher taxonomical level. Argument for this is that
+the quotas are on higher levels than in EUMAP tabel 1</p></li>
+<li><p>Recode ‘All areas’ to proper areas</p></li>
+</ol>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="fu">library</span>(stringr)</span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(icesVocab)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a>knitr<span class="sc">::</span>opts_chunk<span class="sc">$</span><span class="fu">set</span>(<span class="at">echo =</span> T)</span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a></span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>years_of_interest <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">2021</span><span class="sc">:</span><span class="dv">2023</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a>path <span class="ot">&lt;-</span> <span class="st">&quot;../inst/&quot;</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a>linkage_file_name_in <span class="ot">&lt;-</span> <span class="st">&quot;eumap_table_2_1_linkage_version_2022_v2.4&quot;</span></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a>linkage_file_name_out <span class="ot">&lt;-</span> <span class="st">&quot;eumap_table_2_1_linkage_version_2024_v1.4&quot;</span></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a></span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a>path_fides <span class="ot">&lt;-</span> <span class="st">&quot;Q:/mynd/kibi/projects_wks_wgs_rcgs/ISSG_RWP/2024/table_2_1_development/personal/input/fides/&quot;</span></span>
+<span id="cb1-15"><a href="#cb1-15" tabindex="-1"></a>filename_fides <span class="ot">&lt;-</span> <span class="st">&quot;fides_quota_2018_2023.rds&quot;</span></span></code></pre></div>
+</div>
+</div>
+<div id="linkage-additions-corrections-part-1" class="section level1">
+<h1>Linkage additions / corrections part 1</h1>
+<p>(This needs to come before the work with area, so isn’t needed to add
+all the RDB / RDBES areas)</p>
+<div id="corrections" class="section level2">
+<h2>Corrections</h2>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># Wrong area coding in the line below, area 27.9.c is not an area. it should be Union waters of 8 and 9 (SRX/89-C.):</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="co"># 283   North-East Atlantic All skates and rays Rajidae ICES    NA  SRX ########    89-C.   8, 9c   27_8,27_9_C Extra row and FIDES code stands for rays not elsewhere reported</span></span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a>linkage<span class="sc">$</span>area[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North-East Atlantic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Rajidae&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  linkage<span class="sc">$</span>fides_area <span class="sc">==</span> <span class="st">&quot;89-C.&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;8, 9&quot;</span></span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>linkage<span class="sc">$</span>area_bis[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North-East Atlantic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Rajidae&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  linkage<span class="sc">$</span>fides_area <span class="sc">==</span> <span class="st">&quot;89-C.&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;27_8,27_9&quot;</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>linkage<span class="sc">$</span>comments_dev[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North-East Atlantic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Rajidae&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a>  linkage<span class="sc">$</span>fides_area <span class="sc">==</span> <span class="st">&quot;89-C.&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;area corrected by Kirsten&quot;</span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a><span class="co"># Wrong area coding in the line below, area 27.6.a is wrong and already present in another stock. it should be 27.7.a:</span></span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="co"># North-East Atlantic Whiting Merlangius merlangus ICES NA WHG 126438 07A. 7a 27_6_A</span></span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a>linkage<span class="sc">$</span>area_bis[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North-East Atlantic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Merlangius merlangus&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>  linkage<span class="sc">$</span>fides_area <span class="sc">==</span> <span class="st">&quot;07A.&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;27_7_A&quot;</span></span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>linkage<span class="sc">$</span>comments_dev[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North-East Atlantic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Merlangius merlangus&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a>  linkage<span class="sc">$</span>fides_area <span class="sc">==</span> <span class="st">&quot;07A.&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;area corrected by Kirsten&quot;</span></span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a></span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a><span class="co"># Duplicated row for Lepidorhombus whiffiagonis in North-East Atlantic. One of them should have been an extra row for Lepidorhombus spp.</span></span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a></span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a>linkage <span class="ot">&lt;-</span> <span class="fu">subset</span>(linkage, <span class="sc">!</span>(x3a_code <span class="sc">==</span> <span class="st">&quot;LEZ&quot;</span> <span class="sc">&amp;</span> region <span class="sc">==</span> <span class="st">&quot;North-East Atlantic&quot;</span> <span class="sc">&amp;</span> area <span class="sc">==</span> <span class="st">&quot;8c, 9a&quot;</span>))</span></code></pre></div>
+</div>
+</div>
+<div id="additions" class="section level1">
+<h1>Additions</h1>
+<div id="extra-lines-for-stocks-where-the-qouta-is-on-higher-taxonomical-level" class="section level2">
+<h2>Extra lines for ‘stocks’ where the qouta is on higher taxonomical
+level</h2>
+<p>Relevant for Sebastes, Caproidae, Trachurus</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Caproidae ----</span></span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a>cap <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a>  <span class="at">region =</span> <span class="st">&quot;North-East Atlantic&quot;</span>,</span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a>  <span class="at">spp_name =</span> <span class="st">&quot;Boarfishes&quot;</span>,</span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a>  <span class="at">latin_name =</span> <span class="st">&quot;Caproidae spp.&quot;</span>,</span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a>  <span class="at">rfmo =</span> <span class="st">&quot;ICES&quot;</span>,</span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a>  <span class="at">rfmo_stock_id =</span> <span class="cn">NA</span>,</span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a>  <span class="at">x3a_code =</span> <span class="st">&quot;BOR,BOC&quot;</span>,</span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a>  <span class="at">worms_aphia_id =</span> <span class="st">&quot;125613,127419&quot;</span>,</span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>  <span class="at">fides_area =</span> <span class="st">&quot;678-&quot;</span>,</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>  <span class="at">area =</span> <span class="st">&quot;6, 7, 8&quot;</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>  <span class="at">area_bis =</span> <span class="st">&quot;27_6,27_7,27_8&quot;</span>,</span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>  <span class="at">area_rdb =</span> <span class="cn">NA</span>,</span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a>  <span class="at">tac_area_description =</span> <span class="cn">NA</span>,</span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a>  <span class="at">comments =</span> <span class="st">&quot;Extra row for Caproidae spp., FIDES match&quot;</span>,</span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a>  <span class="at">latin_name_join =</span> <span class="st">&quot;Capros aper,Caproidae&quot;</span>,</span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a>  <span class="at">include_in_table_2.1 =</span> <span class="st">&quot;yes&quot;</span>,</span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a>  <span class="at">comments_dev =</span> <span class="cn">NA</span></span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a>)</span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a></span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a>linkage <span class="ot">&lt;-</span> <span class="fu">rbind</span>(linkage, cap)</span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a><span class="co"># Wrong x3a_code, fides_area and comment for capros aper - the TAC is on BOR</span></span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a>linkage<span class="sc">$</span>x3a_code[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North-East Atlantic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Capros aper&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;6, 7, 8&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;BOC&quot;</span></span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North-East Atlantic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Capros aper&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;6, 7, 8&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;No TAC&quot;</span></span>
+<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a>linkage<span class="sc">$</span>comments[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North-East Atlantic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Capros aper&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;6, 7, 8&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;No FIDES match on species. The TAC is on BOR&quot;</span></span>
+<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a></span>
+<span id="cb3-34"><a href="#cb3-34" tabindex="-1"></a><span class="co"># Trachurus 2a ----</span></span>
+<span id="cb3-35"><a href="#cb3-35" tabindex="-1"></a></span>
+<span id="cb3-36"><a href="#cb3-36" tabindex="-1"></a>tra_2a <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-37"><a href="#cb3-37" tabindex="-1"></a>  <span class="at">region =</span> <span class="st">&quot;North Sea and Eastern Arctic&quot;</span>,</span>
+<span id="cb3-38"><a href="#cb3-38" tabindex="-1"></a>  <span class="at">spp_name =</span> <span class="st">&quot;Jack and horse mackerels&quot;</span>,</span>
+<span id="cb3-39"><a href="#cb3-39" tabindex="-1"></a>  <span class="at">latin_name =</span> <span class="st">&quot;Trachurus spp.&quot;</span>,</span>
+<span id="cb3-40"><a href="#cb3-40" tabindex="-1"></a>  <span class="at">rfmo =</span> <span class="st">&quot;ICES&quot;</span>,</span>
+<span id="cb3-41"><a href="#cb3-41" tabindex="-1"></a>  <span class="at">rfmo_stock_id =</span> <span class="cn">NA</span>,</span>
+<span id="cb3-42"><a href="#cb3-42" tabindex="-1"></a>  <span class="at">x3a_code =</span> <span class="st">&quot;HOM,JAA,JJM,CJM,PJM,HMM,RSC,HMC,HMZ,HMG,TUD,TUJ,TUZ,JAX&quot;</span>,</span>
+<span id="cb3-43"><a href="#cb3-43" tabindex="-1"></a>  <span class="at">worms_aphia_id =</span> <span class="st">&quot;170023000401,170023000402,170023000403,170023000405,170023000406,170023000408,170023000411,170023000413,170023000414,170023000415,170023000416,170023000417,170023000418&quot;</span>,</span>
+<span id="cb3-44"><a href="#cb3-44" tabindex="-1"></a>  <span class="at">fides_area =</span> <span class="st">&quot;2A-14&quot;</span>,</span>
+<span id="cb3-45"><a href="#cb3-45" tabindex="-1"></a>  <span class="at">area =</span> <span class="st">&quot;2a&quot;</span>,</span>
+<span id="cb3-46"><a href="#cb3-46" tabindex="-1"></a>  <span class="at">area_bis =</span> <span class="st">&quot;27_2_A&quot;</span>,</span>
+<span id="cb3-47"><a href="#cb3-47" tabindex="-1"></a>  <span class="at">area_rdb =</span> <span class="cn">NA</span>,</span>
+<span id="cb3-48"><a href="#cb3-48" tabindex="-1"></a>  <span class="at">tac_area_description =</span> <span class="cn">NA</span>,</span>
+<span id="cb3-49"><a href="#cb3-49" tabindex="-1"></a>  <span class="at">comments =</span> <span class="st">&quot;Extra row for Trachurus spp. FIDES match but difference with area (area &lt; TAC)&quot;</span>,</span>
+<span id="cb3-50"><a href="#cb3-50" tabindex="-1"></a>  <span class="at">latin_name_join =</span> <span class="st">&quot;Trachurus trachurus,Trachurus picturatus,Trachurus japonicus,Trachurus murphyi,Trachurus symmetricus,Trachurus mediterraneus,Trachurus lathami,Trachurus capensis,Trachurus trecae,Trachurus declivis,Trachurus delagoa,Trachurus indicus,Trachurus novaezelandiae,Trachurus,Trachurus spp&quot;</span>,</span>
+<span id="cb3-51"><a href="#cb3-51" tabindex="-1"></a>  <span class="at">include_in_table_2.1 =</span> <span class="st">&quot;yes&quot;</span>,</span>
+<span id="cb3-52"><a href="#cb3-52" tabindex="-1"></a>  <span class="at">comments_dev =</span> <span class="cn">NA</span></span>
+<span id="cb3-53"><a href="#cb3-53" tabindex="-1"></a>)</span>
+<span id="cb3-54"><a href="#cb3-54" tabindex="-1"></a></span>
+<span id="cb3-55"><a href="#cb3-55" tabindex="-1"></a>linkage <span class="ot">&lt;-</span> <span class="fu">rbind</span>(linkage, tra_2a)</span>
+<span id="cb3-56"><a href="#cb3-56" tabindex="-1"></a></span>
+<span id="cb3-57"><a href="#cb3-57" tabindex="-1"></a><span class="co"># Wrong x3a_code, fides_area and comment</span></span>
+<span id="cb3-58"><a href="#cb3-58" tabindex="-1"></a>linkage<span class="sc">$</span>x3a_code[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North Sea and Eastern Arctic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-59"><a href="#cb3-59" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Trachurus trachurus&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-60"><a href="#cb3-60" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;2a&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;HOM&quot;</span></span>
+<span id="cb3-61"><a href="#cb3-61" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North Sea and Eastern Arctic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-62"><a href="#cb3-62" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Trachurus trachurus&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-63"><a href="#cb3-63" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;2a&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;No TAC&quot;</span></span>
+<span id="cb3-64"><a href="#cb3-64" tabindex="-1"></a>linkage<span class="sc">$</span>comments[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North Sea and Eastern Arctic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-65"><a href="#cb3-65" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Trachurus trachurus&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-66"><a href="#cb3-66" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;2a&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;No FIDES match on species. The TAC is on JAX&quot;</span></span>
+<span id="cb3-67"><a href="#cb3-67" tabindex="-1"></a></span>
+<span id="cb3-68"><a href="#cb3-68" tabindex="-1"></a><span class="co"># Trachurus 47 ----</span></span>
+<span id="cb3-69"><a href="#cb3-69" tabindex="-1"></a></span>
+<span id="cb3-70"><a href="#cb3-70" tabindex="-1"></a>tra_47 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-71"><a href="#cb3-71" tabindex="-1"></a>  <span class="at">region =</span> <span class="st">&quot;North Sea and Eastern Arctic&quot;</span>,</span>
+<span id="cb3-72"><a href="#cb3-72" tabindex="-1"></a>  <span class="at">spp_name =</span> <span class="st">&quot;Jack and horse mackerels&quot;</span>,</span>
+<span id="cb3-73"><a href="#cb3-73" tabindex="-1"></a>  <span class="at">latin_name =</span> <span class="st">&quot;Trachurus spp.&quot;</span>,</span>
+<span id="cb3-74"><a href="#cb3-74" tabindex="-1"></a>  <span class="at">rfmo =</span> <span class="st">&quot;ICES&quot;</span>,</span>
+<span id="cb3-75"><a href="#cb3-75" tabindex="-1"></a>  <span class="at">rfmo_stock_id =</span> <span class="cn">NA</span>,</span>
+<span id="cb3-76"><a href="#cb3-76" tabindex="-1"></a>  <span class="at">x3a_code =</span> <span class="st">&quot;HOM,JAA,JJM,CJM,PJM,HMM,RSC,HMC,HMZ,HMG,TUD,TUJ,TUZ,JAX&quot;</span>,</span>
+<span id="cb3-77"><a href="#cb3-77" tabindex="-1"></a>  <span class="at">worms_aphia_id =</span> <span class="st">&quot;170023000401,170023000402,170023000403,170023000405,170023000406,170023000408,170023000411,170023000413,170023000414,170023000415,170023000416,170023000417,170023000418&quot;</span>,</span>
+<span id="cb3-78"><a href="#cb3-78" tabindex="-1"></a>  <span class="at">fides_area =</span> <span class="st">&quot;4BC7D&quot;</span>,</span>
+<span id="cb3-79"><a href="#cb3-79" tabindex="-1"></a>  <span class="at">area =</span> <span class="st">&quot;Union waters of 4b, 4c and 7d&quot;</span>,</span>
+<span id="cb3-80"><a href="#cb3-80" tabindex="-1"></a>  <span class="at">area_bis =</span> <span class="st">&quot;27_4_B,27_4_C,27_7_D&quot;</span>,</span>
+<span id="cb3-81"><a href="#cb3-81" tabindex="-1"></a>  <span class="at">area_rdb =</span> <span class="cn">NA</span>,</span>
+<span id="cb3-82"><a href="#cb3-82" tabindex="-1"></a>  <span class="at">tac_area_description =</span> <span class="cn">NA</span>,</span>
+<span id="cb3-83"><a href="#cb3-83" tabindex="-1"></a>  <span class="at">comments =</span> <span class="st">&quot;Extra row for Trachurus spp., FIDES match&quot;</span>,</span>
+<span id="cb3-84"><a href="#cb3-84" tabindex="-1"></a>  <span class="at">latin_name_join =</span> <span class="st">&quot;Trachurus trachurus,Trachurus picturatus,Trachurus japonicus,Trachurus murphyi,Trachurus symmetricus,Trachurus mediterraneus,Trachurus lathami,Trachurus capensis,Trachurus trecae,Trachurus declivis,Trachurus delagoa,Trachurus indicus,Trachurus novaezelandiae,Trachurus,Trachurus spp&quot;</span>,</span>
+<span id="cb3-85"><a href="#cb3-85" tabindex="-1"></a>  <span class="at">include_in_table_2.1 =</span> <span class="st">&quot;yes&quot;</span>,</span>
+<span id="cb3-86"><a href="#cb3-86" tabindex="-1"></a>  <span class="at">comments_dev =</span> <span class="cn">NA</span></span>
+<span id="cb3-87"><a href="#cb3-87" tabindex="-1"></a>)</span>
+<span id="cb3-88"><a href="#cb3-88" tabindex="-1"></a></span>
+<span id="cb3-89"><a href="#cb3-89" tabindex="-1"></a>linkage <span class="ot">&lt;-</span> <span class="fu">rbind</span>(linkage, tra_47)</span>
+<span id="cb3-90"><a href="#cb3-90" tabindex="-1"></a></span>
+<span id="cb3-91"><a href="#cb3-91" tabindex="-1"></a><span class="co"># Wrong x3a_code, fides_area and comment</span></span>
+<span id="cb3-92"><a href="#cb3-92" tabindex="-1"></a>linkage<span class="sc">$</span>x3a_code[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North Sea and Eastern Arctic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-93"><a href="#cb3-93" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Trachurus trachurus&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-94"><a href="#cb3-94" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;Union waters of 4b, 4c and 7d&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;HOM&quot;</span></span>
+<span id="cb3-95"><a href="#cb3-95" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North Sea and Eastern Arctic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-96"><a href="#cb3-96" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Trachurus trachurus&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-97"><a href="#cb3-97" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;Union waters of 4b, 4c and 7d&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;No TAC&quot;</span></span>
+<span id="cb3-98"><a href="#cb3-98" tabindex="-1"></a>linkage<span class="sc">$</span>comments[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North Sea and Eastern Arctic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-99"><a href="#cb3-99" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Trachurus trachurus&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-100"><a href="#cb3-100" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;Union waters of 4b, 4c and 7d&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;No FIDES match on species. The TAC is on JAX&quot;</span></span>
+<span id="cb3-101"><a href="#cb3-101" tabindex="-1"></a></span>
+<span id="cb3-102"><a href="#cb3-102" tabindex="-1"></a></span>
+<span id="cb3-103"><a href="#cb3-103" tabindex="-1"></a><span class="co"># Trachurus 4a, 5b, 6a, 7a-c, 7e-k, 8 ----</span></span>
+<span id="cb3-104"><a href="#cb3-104" tabindex="-1"></a></span>
+<span id="cb3-105"><a href="#cb3-105" tabindex="-1"></a>tra_48 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-106"><a href="#cb3-106" tabindex="-1"></a>  <span class="at">region =</span> <span class="st">&quot;North-East Atlantic&quot;</span>,</span>
+<span id="cb3-107"><a href="#cb3-107" tabindex="-1"></a>  <span class="at">spp_name =</span> <span class="st">&quot;Jack and horse mackerels&quot;</span>,</span>
+<span id="cb3-108"><a href="#cb3-108" tabindex="-1"></a>  <span class="at">latin_name =</span> <span class="st">&quot;Trachurus spp.&quot;</span>,</span>
+<span id="cb3-109"><a href="#cb3-109" tabindex="-1"></a>  <span class="at">rfmo =</span> <span class="st">&quot;ICES&quot;</span>,</span>
+<span id="cb3-110"><a href="#cb3-110" tabindex="-1"></a>  <span class="at">rfmo_stock_id =</span> <span class="cn">NA</span>,</span>
+<span id="cb3-111"><a href="#cb3-111" tabindex="-1"></a>  <span class="at">x3a_code =</span> <span class="st">&quot;HOM,JAA,JJM,CJM,PJM,HMM,RSC,HMC,HMZ,HMG,TUD,TUJ,TUZ,JAX&quot;</span>,</span>
+<span id="cb3-112"><a href="#cb3-112" tabindex="-1"></a>  <span class="at">worms_aphia_id =</span> <span class="st">&quot;170023000401,170023000402,170023000403,170023000405,170023000406,170023000408,170023000411,170023000413,170023000414,170023000415,170023000416,170023000417,170023000418&quot;</span>,</span>
+<span id="cb3-113"><a href="#cb3-113" tabindex="-1"></a>  <span class="at">fides_area =</span> <span class="st">&quot;2A-14,08C.&quot;</span>,</span>
+<span id="cb3-114"><a href="#cb3-114" tabindex="-1"></a>  <span class="at">area =</span> <span class="st">&quot;4a, 5b, 6a, 7a-c, 7e-k, 8&quot;</span>,</span>
+<span id="cb3-115"><a href="#cb3-115" tabindex="-1"></a>  <span class="at">area_bis =</span> <span class="st">&quot;27_4_A,27_5_B,27_6_A,27_7_A,27_7_B,27_7_C,27_7_E,27_7_F,27_7_G,27_7_H,27_7_J,27_7_K,27_8&quot;</span>,</span>
+<span id="cb3-116"><a href="#cb3-116" tabindex="-1"></a>  <span class="at">area_rdb =</span> <span class="cn">NA</span>,</span>
+<span id="cb3-117"><a href="#cb3-117" tabindex="-1"></a>  <span class="at">tac_area_description =</span> <span class="cn">NA</span>,</span>
+<span id="cb3-118"><a href="#cb3-118" tabindex="-1"></a>  <span class="at">comments =</span> <span class="st">&quot;Extra row for Trachurus spp., FIDES match but difference with area (area &lt; TAC)&quot;</span>,</span>
+<span id="cb3-119"><a href="#cb3-119" tabindex="-1"></a>  <span class="at">latin_name_join =</span> <span class="st">&quot;Trachurus trachurus,Trachurus picturatus,Trachurus japonicus,Trachurus murphyi,Trachurus symmetricus,Trachurus mediterraneus,Trachurus lathami,Trachurus capensis,Trachurus trecae,Trachurus declivis,Trachurus delagoa,Trachurus indicus,Trachurus novaezelandiae,Trachurus,Trachurus spp&quot;</span>,</span>
+<span id="cb3-120"><a href="#cb3-120" tabindex="-1"></a>  <span class="at">include_in_table_2.1 =</span> <span class="st">&quot;yes&quot;</span>,</span>
+<span id="cb3-121"><a href="#cb3-121" tabindex="-1"></a>  <span class="at">comments_dev =</span> <span class="cn">NA</span></span>
+<span id="cb3-122"><a href="#cb3-122" tabindex="-1"></a>)</span>
+<span id="cb3-123"><a href="#cb3-123" tabindex="-1"></a></span>
+<span id="cb3-124"><a href="#cb3-124" tabindex="-1"></a>linkage <span class="ot">&lt;-</span> <span class="fu">rbind</span>(linkage, tra_48)</span>
+<span id="cb3-125"><a href="#cb3-125" tabindex="-1"></a></span>
+<span id="cb3-126"><a href="#cb3-126" tabindex="-1"></a><span class="co"># Wrong x3a_code, fides_area and comment</span></span>
+<span id="cb3-127"><a href="#cb3-127" tabindex="-1"></a>linkage<span class="sc">$</span>x3a_code[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North-East Atlantic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-128"><a href="#cb3-128" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Trachurus trachurus&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-129"><a href="#cb3-129" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;4a, 5b, 6a, 7a-c, 7e-k, 8&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;HOM&quot;</span></span>
+<span id="cb3-130"><a href="#cb3-130" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North-East Atlantic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-131"><a href="#cb3-131" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Trachurus trachurus&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-132"><a href="#cb3-132" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;4a, 5b, 6a, 7a-c, 7e-k, 8&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;No TAC&quot;</span></span>
+<span id="cb3-133"><a href="#cb3-133" tabindex="-1"></a>linkage<span class="sc">$</span>comments[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North-East Atlantic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-134"><a href="#cb3-134" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Trachurus trachurus&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-135"><a href="#cb3-135" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;4a, 5b, 6a, 7a-c, 7e-k, 8&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;No FIDES match on species. The TAC is on JAX&quot;</span></span>
+<span id="cb3-136"><a href="#cb3-136" tabindex="-1"></a></span>
+<span id="cb3-137"><a href="#cb3-137" tabindex="-1"></a></span>
+<span id="cb3-138"><a href="#cb3-138" tabindex="-1"></a><span class="co"># Trachurus 9 - new line ----</span></span>
+<span id="cb3-139"><a href="#cb3-139" tabindex="-1"></a></span>
+<span id="cb3-140"><a href="#cb3-140" tabindex="-1"></a>tra_9 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-141"><a href="#cb3-141" tabindex="-1"></a>  <span class="at">region =</span> <span class="st">&quot;North-East Atlantic&quot;</span>,</span>
+<span id="cb3-142"><a href="#cb3-142" tabindex="-1"></a>  <span class="at">spp_name =</span> <span class="st">&quot;Jack and horse mackerels&quot;</span>,</span>
+<span id="cb3-143"><a href="#cb3-143" tabindex="-1"></a>  <span class="at">latin_name =</span> <span class="st">&quot;Trachurus spp.&quot;</span>,</span>
+<span id="cb3-144"><a href="#cb3-144" tabindex="-1"></a>  <span class="at">rfmo =</span> <span class="st">&quot;ICES&quot;</span>,</span>
+<span id="cb3-145"><a href="#cb3-145" tabindex="-1"></a>  <span class="at">rfmo_stock_id =</span> <span class="cn">NA</span>,</span>
+<span id="cb3-146"><a href="#cb3-146" tabindex="-1"></a>  <span class="at">x3a_code =</span> <span class="st">&quot;HOM,JAA,JJM,CJM,PJM,HMM,RSC,HMC,HMZ,HMG,TUD,TUJ,TUZ,JAX&quot;</span>,</span>
+<span id="cb3-147"><a href="#cb3-147" tabindex="-1"></a>  <span class="at">worms_aphia_id =</span> <span class="st">&quot;170023000401,170023000402,170023000403,170023000405,170023000406,170023000408,170023000411,170023000413,170023000414,170023000415,170023000416,170023000417,170023000418&quot;</span>,</span>
+<span id="cb3-148"><a href="#cb3-148" tabindex="-1"></a>  <span class="at">fides_area =</span> <span class="st">&quot;09.&quot;</span>,</span>
+<span id="cb3-149"><a href="#cb3-149" tabindex="-1"></a>  <span class="at">area =</span> <span class="st">&quot;9&quot;</span>,</span>
+<span id="cb3-150"><a href="#cb3-150" tabindex="-1"></a>  <span class="at">area_bis =</span> <span class="st">&quot;27_9&quot;</span>,</span>
+<span id="cb3-151"><a href="#cb3-151" tabindex="-1"></a>  <span class="at">area_rdb =</span> <span class="cn">NA</span>,</span>
+<span id="cb3-152"><a href="#cb3-152" tabindex="-1"></a>  <span class="at">tac_area_description =</span> <span class="cn">NA</span>,</span>
+<span id="cb3-153"><a href="#cb3-153" tabindex="-1"></a>  <span class="at">comments =</span> <span class="st">&quot;Extra row for Trachurus spp. in area 27.9, since TAC&quot;</span>,</span>
+<span id="cb3-154"><a href="#cb3-154" tabindex="-1"></a>  <span class="at">latin_name_join =</span> <span class="st">&quot;Trachurus trachurus,Trachurus picturatus,Trachurus japonicus,Trachurus murphyi,Trachurus symmetricus,Trachurus mediterraneus,Trachurus lathami,Trachurus capensis,Trachurus trecae,Trachurus declivis,Trachurus delagoa,Trachurus indicus,Trachurus novaezelandiae,Trachurus,Trachurus spp&quot;</span>,</span>
+<span id="cb3-155"><a href="#cb3-155" tabindex="-1"></a>  <span class="at">include_in_table_2.1 =</span> <span class="st">&quot;yes&quot;</span>,</span>
+<span id="cb3-156"><a href="#cb3-156" tabindex="-1"></a>  <span class="at">comments_dev =</span> <span class="cn">NA</span></span>
+<span id="cb3-157"><a href="#cb3-157" tabindex="-1"></a>)</span>
+<span id="cb3-158"><a href="#cb3-158" tabindex="-1"></a></span>
+<span id="cb3-159"><a href="#cb3-159" tabindex="-1"></a>linkage <span class="ot">&lt;-</span> <span class="fu">rbind</span>(linkage, tra_9)</span>
+<span id="cb3-160"><a href="#cb3-160" tabindex="-1"></a></span>
+<span id="cb3-161"><a href="#cb3-161" tabindex="-1"></a><span class="co"># Wrong x3a_code, fides_area and comment</span></span>
+<span id="cb3-162"><a href="#cb3-162" tabindex="-1"></a>linkage<span class="sc">$</span>x3a_code[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North-East Atlantic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-163"><a href="#cb3-163" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Trachurus trachurus&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-164"><a href="#cb3-164" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;9a&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;HOM&quot;</span></span>
+<span id="cb3-165"><a href="#cb3-165" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North-East Atlantic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-166"><a href="#cb3-166" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Trachurus trachurus&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-167"><a href="#cb3-167" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;9a&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;No TAC&quot;</span></span>
+<span id="cb3-168"><a href="#cb3-168" tabindex="-1"></a>linkage<span class="sc">$</span>comments[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North-East Atlantic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-169"><a href="#cb3-169" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Trachurus trachurus&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-170"><a href="#cb3-170" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;9a&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;No FIDES match on species. The TAC is on JAX&quot;</span></span>
+<span id="cb3-171"><a href="#cb3-171" tabindex="-1"></a></span>
+<span id="cb3-172"><a href="#cb3-172" tabindex="-1"></a><span class="co"># Sebastes 12 ----</span></span>
+<span id="cb3-173"><a href="#cb3-173" tabindex="-1"></a>red_12 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb3-174"><a href="#cb3-174" tabindex="-1"></a>  <span class="at">region =</span> <span class="st">&quot;North Sea and Eastern Arctic&quot;</span>,</span>
+<span id="cb3-175"><a href="#cb3-175" tabindex="-1"></a>  <span class="at">spp_name =</span> <span class="st">&quot;Redfish&quot;</span>,</span>
+<span id="cb3-176"><a href="#cb3-176" tabindex="-1"></a>  <span class="at">latin_name =</span> <span class="st">&quot;Sebastes spp.&quot;</span>,</span>
+<span id="cb3-177"><a href="#cb3-177" tabindex="-1"></a>  <span class="at">rfmo =</span> <span class="st">&quot;ICES&quot;</span>,</span>
+<span id="cb3-178"><a href="#cb3-178" tabindex="-1"></a>  <span class="at">rfmo_stock_id =</span> <span class="cn">NA</span>,</span>
+<span id="cb3-179"><a href="#cb3-179" tabindex="-1"></a>  <span class="at">x3a_code =</span> <span class="st">&quot;REG,SFV,WRO,YRO,SFP,SEQ,SED,SFY,OPP,SBC,SFW,REB,REC,REN,SPG,SGO,SFO,SFT,SFB,SFJ,SFD,SFE,SFQ,SFK,SFG,SEJ,SFL,SFZ,SWD,SBY,RMG,RNV,RPJ,RRV,RVW,RVC,RVT,RVU,RVP,RVN,RVH,RVB,RVR,RVZ,RVM,RFC,REQ,QYR,QYS,QYT,QYV,RIQ,RED&quot;</span>,</span>
+<span id="cb3-180"><a href="#cb3-180" tabindex="-1"></a>  <span class="at">worms_aphia_id =</span> <span class="st">&quot;178001000101,178001000102,178001000103,178001000104,178001000105,178001000106,178001000107,178001000108,178001000109,178001000110,178001000111,178001000112,178001000113,178001000114,178001000115,178001000116,178001000117,178001000119,178001000120,178001000121,178001000122,178001000123,178001000124,178001000125,178001000126,178001000127,178001000128,178001000129,178001000130,178001000131,178001000132,178001000133,178001000134,178001000135,178001000136,178001000137,178001000138,178001000139,178001000140,178001000141,178001000142,178001000143,178001000144,178001000145,178001000146,178001000147,178001000148,178001000149,178001000150,178001000151,178001000153,178001000154&quot;</span>,</span>
+<span id="cb3-181"><a href="#cb3-181" tabindex="-1"></a>  <span class="at">fides_area =</span> <span class="st">&quot;1/2INT,1N2AB.&quot;</span>,</span>
+<span id="cb3-182"><a href="#cb3-182" tabindex="-1"></a>  <span class="at">area =</span> <span class="st">&quot;1, 2&quot;</span>,</span>
+<span id="cb3-183"><a href="#cb3-183" tabindex="-1"></a>  <span class="at">area_bis =</span> <span class="st">&quot;27_1,27_2&quot;</span>,</span>
+<span id="cb3-184"><a href="#cb3-184" tabindex="-1"></a>  <span class="at">area_rdb =</span> <span class="cn">NA</span>,</span>
+<span id="cb3-185"><a href="#cb3-185" tabindex="-1"></a>  <span class="at">tac_area_description =</span> <span class="cn">NA</span>,</span>
+<span id="cb3-186"><a href="#cb3-186" tabindex="-1"></a>  <span class="at">comments =</span> <span class="st">&quot;Extra row for Sebastes spp. FIDES match&quot;</span>,</span>
+<span id="cb3-187"><a href="#cb3-187" tabindex="-1"></a>  <span class="at">latin_name_join =</span> <span class="st">&quot;Sebastes norvegicus,Sebastes viviparus,Sebastes entomelas,Sebastes flavidus,Sebastes serriceps,Sebastes rosaceus,Sebastes serranoides,Sebastes mystinus,Sebastes alutus,Sebastes paucispinis,Sebastes miniatus,Sebastes mentella,Sebastes capensis,Sebastes fasciatus,Sebastes pinniger,Sebastes goodei,Sebastes constellatus,Sebastes aleutianus,Sebastes borealis,Sebastes caurinus,Sebastes diploproa,Sebastes elongatus,Sebastes inermis,Sebastes jordani,Sebastes maliger,Sebastes minor,Sebastes schlegeli,Sebastes taczanowskii,Sebastes reedi,Sebastes brevispinis,Sebastes melanops,Sebastes nigrocinctus,Sebastes proriger,Sebastes ruberrimus,Sebastes wilsoni,Sebastes ciliatus,Sebastes saxicola,Sebastes variegatus,Sebastes polyspinis,Sebastes nebulosus,Sebastes helvomaculatus,Sebastes babcocki,Sebastes aurora,Sebastes zacentrus,Sebastes melanostomus,Sebastes crameri,Sebastes oculatus,Sebastes chlorostictus,Sebastes carnatus,Sebastes levis,Sebastes rufus,Sebastes auriculatus,Sebastes,Sebastes spp</span></span>
+<span id="cb3-188"><a href="#cb3-188" tabindex="-1"></a><span class="st">&quot;</span>,</span>
+<span id="cb3-189"><a href="#cb3-189" tabindex="-1"></a>  <span class="at">include_in_table_2.1 =</span> <span class="st">&quot;yes&quot;</span>,</span>
+<span id="cb3-190"><a href="#cb3-190" tabindex="-1"></a>  <span class="at">comments_dev =</span> <span class="cn">NA</span></span>
+<span id="cb3-191"><a href="#cb3-191" tabindex="-1"></a>)</span>
+<span id="cb3-192"><a href="#cb3-192" tabindex="-1"></a></span>
+<span id="cb3-193"><a href="#cb3-193" tabindex="-1"></a>linkage <span class="ot">&lt;-</span> <span class="fu">rbind</span>(linkage, red_12)</span>
+<span id="cb3-194"><a href="#cb3-194" tabindex="-1"></a></span>
+<span id="cb3-195"><a href="#cb3-195" tabindex="-1"></a><span class="co"># Wrong x3a_code, fides_area and comment</span></span>
+<span id="cb3-196"><a href="#cb3-196" tabindex="-1"></a>linkage<span class="sc">$</span>comments[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North Sea and Eastern Arctic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-197"><a href="#cb3-197" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Sebastes mentella&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb3-198"><a href="#cb3-198" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;1, 2&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;FIDES match (area &gt; TAC). The TAC on Sebastes mentella is only for Norwegain water&quot;</span></span></code></pre></div>
+</div>
+<div id="extra-lines-for-stocks-with-quota" class="section level2">
+<h2>Extra lines for ‘stocks’ with quota</h2>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a><span class="co"># Nephrops ----</span></span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a>nep <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a>  <span class="at">region =</span> <span class="st">&quot;North-East Atlantic&quot;</span>,</span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a>  <span class="at">spp_name =</span> <span class="st">&quot;Norway lobster&quot;</span>,</span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a>  <span class="at">latin_name =</span> <span class="st">&quot;Nephrops norvegicus&quot;</span>,</span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>  <span class="at">rfmo =</span> <span class="st">&quot;ICES&quot;</span>,</span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>  <span class="at">rfmo_stock_id =</span> <span class="cn">NA</span>,</span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>  <span class="at">x3a_code =</span> <span class="st">&quot;NEP&quot;</span>,</span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>  <span class="at">worms_aphia_id =</span> <span class="st">&quot;107254&quot;</span>,</span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>  <span class="at">fides_area =</span> <span class="st">&quot;8CU31,8CU25&quot;</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>  <span class="at">area =</span> <span class="st">&quot;10&quot;</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>  <span class="at">area_bis =</span> <span class="st">&quot;27_10&quot;</span>,</span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>  <span class="at">area_rdb =</span> <span class="cn">NA</span>,</span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>  <span class="at">tac_area_description =</span> <span class="cn">NA</span>,</span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>  <span class="at">comments =</span> <span class="st">&quot;Extra row for Nephrops in FU 25 and 31, FIDES match (area &gt; TAC)&quot;</span>,</span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>  <span class="at">latin_name_join =</span> <span class="st">&quot;Nephrops norvegicus&quot;</span>,</span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>  <span class="at">include_in_table_2.1 =</span> <span class="st">&quot;yes&quot;</span>,</span>
+<span id="cb4-19"><a href="#cb4-19" tabindex="-1"></a>  <span class="at">comments_dev =</span> <span class="cn">NA</span></span>
+<span id="cb4-20"><a href="#cb4-20" tabindex="-1"></a>)</span>
+<span id="cb4-21"><a href="#cb4-21" tabindex="-1"></a></span>
+<span id="cb4-22"><a href="#cb4-22" tabindex="-1"></a>linkage <span class="ot">&lt;-</span> <span class="fu">rbind</span>(linkage, nep)</span>
+<span id="cb4-23"><a href="#cb4-23" tabindex="-1"></a></span>
+<span id="cb4-24"><a href="#cb4-24" tabindex="-1"></a><span class="co"># Herring 7ef ----</span></span>
+<span id="cb4-25"><a href="#cb4-25" tabindex="-1"></a></span>
+<span id="cb4-26"><a href="#cb4-26" tabindex="-1"></a>her <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb4-27"><a href="#cb4-27" tabindex="-1"></a>  <span class="at">region =</span> <span class="st">&quot;North-East Atlantic&quot;</span>,</span>
+<span id="cb4-28"><a href="#cb4-28" tabindex="-1"></a>  <span class="at">spp_name =</span> <span class="st">&quot;Herring&quot;</span>,</span>
+<span id="cb4-29"><a href="#cb4-29" tabindex="-1"></a>  <span class="at">latin_name =</span> <span class="st">&quot;Clupea harengus&quot;</span>,</span>
+<span id="cb4-30"><a href="#cb4-30" tabindex="-1"></a>  <span class="at">rfmo =</span> <span class="st">&quot;ICES&quot;</span>,</span>
+<span id="cb4-31"><a href="#cb4-31" tabindex="-1"></a>  <span class="at">rfmo_stock_id =</span> <span class="cn">NA</span>,</span>
+<span id="cb4-32"><a href="#cb4-32" tabindex="-1"></a>  <span class="at">x3a_code =</span> <span class="st">&quot;HER&quot;</span>,</span>
+<span id="cb4-33"><a href="#cb4-33" tabindex="-1"></a>  <span class="at">worms_aphia_id =</span> <span class="st">&quot;107254&quot;</span>,</span>
+<span id="cb4-34"><a href="#cb4-34" tabindex="-1"></a>  <span class="at">fides_area =</span> <span class="st">&quot;7EF.&quot;</span>,</span>
+<span id="cb4-35"><a href="#cb4-35" tabindex="-1"></a>  <span class="at">area =</span> <span class="st">&quot;7e, f&quot;</span>,</span>
+<span id="cb4-36"><a href="#cb4-36" tabindex="-1"></a>  <span class="at">area_bis =</span> <span class="st">&quot;27_7_E,27_7_F&quot;</span>,</span>
+<span id="cb4-37"><a href="#cb4-37" tabindex="-1"></a>  <span class="at">area_rdb =</span> <span class="cn">NA</span>,</span>
+<span id="cb4-38"><a href="#cb4-38" tabindex="-1"></a>  <span class="at">tac_area_description =</span> <span class="cn">NA</span>,</span>
+<span id="cb4-39"><a href="#cb4-39" tabindex="-1"></a>  <span class="at">comments =</span> <span class="st">&quot;Extra row for herring in area 27.7.e and 27.7.f, FIDES match&quot;</span>,</span>
+<span id="cb4-40"><a href="#cb4-40" tabindex="-1"></a>  <span class="at">latin_name_join =</span> <span class="st">&quot;Clupea harengus&quot;</span>,</span>
+<span id="cb4-41"><a href="#cb4-41" tabindex="-1"></a>  <span class="at">include_in_table_2.1 =</span> <span class="st">&quot;yes&quot;</span>,</span>
+<span id="cb4-42"><a href="#cb4-42" tabindex="-1"></a>  <span class="at">comments_dev =</span> <span class="cn">NA</span></span>
+<span id="cb4-43"><a href="#cb4-43" tabindex="-1"></a>)</span>
+<span id="cb4-44"><a href="#cb4-44" tabindex="-1"></a></span>
+<span id="cb4-45"><a href="#cb4-45" tabindex="-1"></a>linkage <span class="ot">&lt;-</span> <span class="fu">rbind</span>(linkage, her)</span>
+<span id="cb4-46"><a href="#cb4-46" tabindex="-1"></a></span>
+<span id="cb4-47"><a href="#cb4-47" tabindex="-1"></a></span>
+<span id="cb4-48"><a href="#cb4-48" tabindex="-1"></a><span class="co"># Roughhead grenadier ----</span></span>
+<span id="cb4-49"><a href="#cb4-49" tabindex="-1"></a></span>
+<span id="cb4-50"><a href="#cb4-50" tabindex="-1"></a>rhg_567 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb4-51"><a href="#cb4-51" tabindex="-1"></a>  <span class="at">region =</span> <span class="st">&quot;North-East Atlantic&quot;</span>,</span>
+<span id="cb4-52"><a href="#cb4-52" tabindex="-1"></a>  <span class="at">spp_name =</span> <span class="st">&quot;Roughhead grenadier&quot;</span>,</span>
+<span id="cb4-53"><a href="#cb4-53" tabindex="-1"></a>  <span class="at">latin_name =</span> <span class="st">&quot;Macrourus berglax&quot;</span>,</span>
+<span id="cb4-54"><a href="#cb4-54" tabindex="-1"></a>  <span class="at">rfmo =</span> <span class="st">&quot;ICES&quot;</span>,</span>
+<span id="cb4-55"><a href="#cb4-55" tabindex="-1"></a>  <span class="at">rfmo_stock_id =</span> <span class="cn">NA</span>,</span>
+<span id="cb4-56"><a href="#cb4-56" tabindex="-1"></a>  <span class="at">x3a_code =</span> <span class="st">&quot;RHG&quot;</span>,</span>
+<span id="cb4-57"><a href="#cb4-57" tabindex="-1"></a>  <span class="at">worms_aphia_id =</span> <span class="st">&quot;126472&quot;</span>,</span>
+<span id="cb4-58"><a href="#cb4-58" tabindex="-1"></a>  <span class="at">fides_area =</span> <span class="st">&quot;5B67-&quot;</span>,</span>
+<span id="cb4-59"><a href="#cb4-59" tabindex="-1"></a>  <span class="at">area =</span> <span class="st">&quot;5b, 6, 7&quot;</span>,</span>
+<span id="cb4-60"><a href="#cb4-60" tabindex="-1"></a>  <span class="at">area_bis =</span> <span class="st">&quot;27_5_B,27_6,27_7&quot;</span>,</span>
+<span id="cb4-61"><a href="#cb4-61" tabindex="-1"></a>  <span class="at">area_rdb =</span> <span class="cn">NA</span>,</span>
+<span id="cb4-62"><a href="#cb4-62" tabindex="-1"></a>  <span class="at">tac_area_description =</span> <span class="cn">NA</span>,</span>
+<span id="cb4-63"><a href="#cb4-63" tabindex="-1"></a>  <span class="at">comments =</span> <span class="st">&quot;Extra row for Roughhead grenadier in area 5b, 6, 7, FIDES match&quot;</span>,</span>
+<span id="cb4-64"><a href="#cb4-64" tabindex="-1"></a>  <span class="at">latin_name_join =</span> <span class="st">&quot;Macrourus berglax&quot;</span>,</span>
+<span id="cb4-65"><a href="#cb4-65" tabindex="-1"></a>  <span class="at">include_in_table_2.1 =</span> <span class="st">&quot;yes&quot;</span>,</span>
+<span id="cb4-66"><a href="#cb4-66" tabindex="-1"></a>  <span class="at">comments_dev =</span> <span class="cn">NA</span></span>
+<span id="cb4-67"><a href="#cb4-67" tabindex="-1"></a>)</span>
+<span id="cb4-68"><a href="#cb4-68" tabindex="-1"></a></span>
+<span id="cb4-69"><a href="#cb4-69" tabindex="-1"></a>linkage <span class="ot">&lt;-</span> <span class="fu">rbind</span>(linkage, rhg_567)</span>
+<span id="cb4-70"><a href="#cb4-70" tabindex="-1"></a></span>
+<span id="cb4-71"><a href="#cb4-71" tabindex="-1"></a>rhg_3 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb4-72"><a href="#cb4-72" tabindex="-1"></a>  <span class="at">region =</span> <span class="st">&quot;North-East Atlantic&quot;</span>,</span>
+<span id="cb4-73"><a href="#cb4-73" tabindex="-1"></a>  <span class="at">spp_name =</span> <span class="st">&quot;Roughhead grenadier&quot;</span>,</span>
+<span id="cb4-74"><a href="#cb4-74" tabindex="-1"></a>  <span class="at">latin_name =</span> <span class="st">&quot;Macrourus berglax&quot;</span>,</span>
+<span id="cb4-75"><a href="#cb4-75" tabindex="-1"></a>  <span class="at">rfmo =</span> <span class="st">&quot;ICES&quot;</span>,</span>
+<span id="cb4-76"><a href="#cb4-76" tabindex="-1"></a>  <span class="at">rfmo_stock_id =</span> <span class="cn">NA</span>,</span>
+<span id="cb4-77"><a href="#cb4-77" tabindex="-1"></a>  <span class="at">x3a_code =</span> <span class="st">&quot;RHG&quot;</span>,</span>
+<span id="cb4-78"><a href="#cb4-78" tabindex="-1"></a>  <span class="at">worms_aphia_id =</span> <span class="st">&quot;126472&quot;</span>,</span>
+<span id="cb4-79"><a href="#cb4-79" tabindex="-1"></a>  <span class="at">fides_area =</span> <span class="st">&quot;03-&quot;</span>,</span>
+<span id="cb4-80"><a href="#cb4-80" tabindex="-1"></a>  <span class="at">area =</span> <span class="st">&quot;3a&quot;</span>,</span>
+<span id="cb4-81"><a href="#cb4-81" tabindex="-1"></a>  <span class="at">area_bis =</span> <span class="st">&quot;27_3_A&quot;</span>,</span>
+<span id="cb4-82"><a href="#cb4-82" tabindex="-1"></a>  <span class="at">area_rdb =</span> <span class="cn">NA</span>,</span>
+<span id="cb4-83"><a href="#cb4-83" tabindex="-1"></a>  <span class="at">tac_area_description =</span> <span class="cn">NA</span>,</span>
+<span id="cb4-84"><a href="#cb4-84" tabindex="-1"></a>  <span class="at">comments =</span> <span class="st">&quot;Extra row for Roughhead grenadier in area 3a, FIDES match&quot;</span>,</span>
+<span id="cb4-85"><a href="#cb4-85" tabindex="-1"></a>  <span class="at">latin_name_join =</span> <span class="st">&quot;Macrourus berglax&quot;</span>,</span>
+<span id="cb4-86"><a href="#cb4-86" tabindex="-1"></a>  <span class="at">include_in_table_2.1 =</span> <span class="st">&quot;yes&quot;</span>,</span>
+<span id="cb4-87"><a href="#cb4-87" tabindex="-1"></a>  <span class="at">comments_dev =</span> <span class="cn">NA</span></span>
+<span id="cb4-88"><a href="#cb4-88" tabindex="-1"></a>)</span>
+<span id="cb4-89"><a href="#cb4-89" tabindex="-1"></a></span>
+<span id="cb4-90"><a href="#cb4-90" tabindex="-1"></a>linkage <span class="ot">&lt;-</span> <span class="fu">rbind</span>(linkage, rhg_3)</span></code></pre></div>
+</div>
+<div id="fixing-overlapping-stocks" class="section level2">
+<h2>Fixing overlapping stocks</h2>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a><span class="co"># Argentina silus - not sure about this one</span></span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co"># linkage$area[linkage$region == &quot;North-East Atlantic&quot; &amp;</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co">#   linkage$latin_name == &quot;Argentina silus&quot; &amp;</span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#   linkage$area == &quot;5, 6, 7&quot;] &lt;- &quot;5b, 6, 7&quot;</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co"># linkage$area_bis[linkage$region == &quot;North-East Atlantic&quot; &amp;</span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#   linkage$latin_name == &quot;Argentina silus&quot; &amp;</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#   linkage$area == &quot;5b, 6, 7&quot;] &lt;- &quot;27_5_B,27_6,27_7&quot;</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co"># linkage$comments_dev[linkage$region == &quot;North-East Atlantic&quot; &amp;</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#   linkage$latin_name == &quot;Argentina silus&quot; &amp;</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#   linkage$area == &quot;5b, 6, 7&quot;] &lt;- &quot;Overlapping with another stock, removed 27.5.a from this stock&quot;</span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co"># Mustelus</span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a>linkage<span class="sc">$</span>area[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North Sea and Eastern Arctic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Mustelus spp.&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;1, 2, 14&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;1, 2&quot;</span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a></span>
+<span id="cb5-19"><a href="#cb5-19" tabindex="-1"></a>linkage<span class="sc">$</span>area_bis[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North Sea and Eastern Arctic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb5-20"><a href="#cb5-20" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Mustelus spp.&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb5-21"><a href="#cb5-21" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;1, 2&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;27_1,27_2&quot;</span></span>
+<span id="cb5-22"><a href="#cb5-22" tabindex="-1"></a></span>
+<span id="cb5-23"><a href="#cb5-23" tabindex="-1"></a>linkage<span class="sc">$</span>comments[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North Sea and Eastern Arctic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb5-24"><a href="#cb5-24" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Mustelus spp.&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb5-25"><a href="#cb5-25" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;1, 2&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;Overlapping with another stock, removed 27.14 from this stock&quot;</span></span>
+<span id="cb5-26"><a href="#cb5-26" tabindex="-1"></a></span>
+<span id="cb5-27"><a href="#cb5-27" tabindex="-1"></a></span>
+<span id="cb5-28"><a href="#cb5-28" tabindex="-1"></a><span class="co"># Solea solea</span></span>
+<span id="cb5-29"><a href="#cb5-29" tabindex="-1"></a>linkage<span class="sc">$</span>area[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North Sea and Eastern Arctic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb5-30"><a href="#cb5-30" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Solea solea&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb5-31"><a href="#cb5-31" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;Union waters of 2a, 3a and 4&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;Union waters of 2a and 4&quot;</span></span>
+<span id="cb5-32"><a href="#cb5-32" tabindex="-1"></a></span>
+<span id="cb5-33"><a href="#cb5-33" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North Sea and Eastern Arctic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb5-34"><a href="#cb5-34" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Solea solea&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb5-35"><a href="#cb5-35" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;Union waters of 2a and 4&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;24-C.&quot;</span></span>
+<span id="cb5-36"><a href="#cb5-36" tabindex="-1"></a></span>
+<span id="cb5-37"><a href="#cb5-37" tabindex="-1"></a>linkage<span class="sc">$</span>area_bis[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North Sea and Eastern Arctic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb5-38"><a href="#cb5-38" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Solea solea&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb5-39"><a href="#cb5-39" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;Union waters of 2a and 4&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;27_2_A,27_4&quot;</span></span>
+<span id="cb5-40"><a href="#cb5-40" tabindex="-1"></a></span>
+<span id="cb5-41"><a href="#cb5-41" tabindex="-1"></a>linkage<span class="sc">$</span>comments_dev[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North Sea and Eastern Arctic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb5-42"><a href="#cb5-42" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Solea solea&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb5-43"><a href="#cb5-43" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;Union waters of 2a and 4&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;Overlapping with another stock, removed 27.3.a from this stock&quot;</span></span>
+<span id="cb5-44"><a href="#cb5-44" tabindex="-1"></a></span>
+<span id="cb5-45"><a href="#cb5-45" tabindex="-1"></a>linkage<span class="sc">$</span>area_bis[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;Baltic Sea&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb5-46"><a href="#cb5-46" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Solea solea&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb5-47"><a href="#cb5-47" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;20-24&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;27_3_A,27_3_C_22,27_3_B_23,27_3_D_24&quot;</span></span></code></pre></div>
+</div>
+<div id="recode-all-areas-to-proper-areas" class="section level2">
+<h2>Recode ‘All areas’ to proper areas</h2>
+<p><strong>Problem:</strong> Aggregation by region, IFMO, species and
+area in the resulting table 2.1 is not always unique (Probably only a
+problem for the ‘All areas’) For some stocks this gives duplicated rows,
+since the area given in table 1 header (EUMAP) is not a part of the key,
+e.g., Squalus acanthias in the North Sea and Eastern Arctic ICES</p>
+<p><strong>Solution:</strong> From MARE’s Q&amp;A - Use the area in the
+header of table 1 (EU-MAP)</p>
+<p><strong>Future solution:</strong> This could also be implemented for
+other areas</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="co"># North Sea and Eastern Arctic, Squalus acanthias ----</span></span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a>linkage<span class="sc">$</span>area[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North Sea and Eastern Arctic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Squalus acanthias&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a>  linkage<span class="sc">$</span>area_bis <span class="sc">==</span> <span class="st">&quot;27_4,27_7_D&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;1, 2&quot;</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a></span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a>linkage<span class="sc">$</span>comments_dev[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North Sea and Eastern Arctic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Squalus acanthias&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a>  linkage<span class="sc">$</span>area_bis <span class="sc">==</span> <span class="st">&quot;27_4,27_7_D&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;Recoded from &#39;All areas&#39; to specific areas&quot;</span></span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a>linkage<span class="sc">$</span>area_bis[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North Sea and Eastern Arctic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Squalus acanthias&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a>  linkage<span class="sc">$</span>area_bis <span class="sc">==</span> <span class="st">&quot;27_4,27_7_D&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;27_1, 27_2&quot;</span> <span class="co"># Wrong area_bis</span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a>linkage<span class="sc">$</span>area[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North Sea and Eastern Arctic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Squalus acanthias&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a>  linkage<span class="sc">$</span>area_bis <span class="sc">==</span> <span class="st">&quot;27_3_A,27_4,27_7_D&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;3a, 4, 7d&quot;</span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a></span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a>linkage<span class="sc">$</span>comments_dev[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North Sea and Eastern Arctic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a>  linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Squalus acanthias&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a>  linkage<span class="sc">$</span>area_bis <span class="sc">==</span> <span class="st">&quot;27_3_A,27_4,27_7_D&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;Recoded from &#39;All areas&#39; to specific areas&quot;</span></span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a></span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="co"># North-East Atlantic ----</span></span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a>linkage<span class="sc">$</span>comments_dev[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North-East Atlantic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;All areas&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;Recoded from &#39;All areas&#39; to specific areas&quot;</span></span>
+<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a></span>
+<span id="cb6-26"><a href="#cb6-26" tabindex="-1"></a>linkage<span class="sc">$</span>area[linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North-East Atlantic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb6-27"><a href="#cb6-27" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;All areas&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;5, 6, 7 (excl. 7d), 8, 9, 10, 12, 14&quot;</span></span></code></pre></div>
+</div>
+<div id="known-issues---not-to-be-displayed-in-table-2.1-control-file" class="section level2">
+<h2>Known issues - not to be displayed in table 2.1 | control file</h2>
+<p>Highlights known issues with input data. These should only be
+included in the control / check file, not table 2.1</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>algae <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>  <span class="at">region =</span> <span class="cn">NA</span>,</span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>  <span class="at">spp_name =</span> <span class="st">&quot;Algae&quot;</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a>  <span class="at">latin_name =</span> <span class="st">&quot;Chromista&quot;</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>  <span class="at">rfmo =</span> <span class="cn">NA</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>  <span class="at">rfmo_stock_id =</span> <span class="cn">NA</span>,</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>  <span class="at">x3a_code =</span> <span class="cn">NA</span>,</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>  <span class="at">worms_aphia_id =</span> <span class="dv">126417</span>,</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>  <span class="at">fides_area =</span> <span class="cn">NA</span>,</span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>  <span class="at">area =</span> <span class="cn">NA</span>,</span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>  <span class="at">area_bis =</span> <span class="st">&quot;27&quot;</span>,</span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>  <span class="at">area_rdb =</span> <span class="cn">NA</span>,</span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>  <span class="at">tac_area_description =</span> <span class="cn">NA</span>,</span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>  <span class="at">comments =</span> <span class="st">&quot;Algea&quot;</span>,</span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a>  <span class="at">latin_name_join =</span> <span class="cn">NA</span>,</span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a>  <span class="at">include_in_table_2.1 =</span> <span class="st">&quot;no&quot;</span>,</span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a>  <span class="at">comments_dev =</span> <span class="cn">NA</span></span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a>)</span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a></span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a><span class="co"># capros &lt;- data.frame(</span></span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a><span class="co">#   region = NA,</span></span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a><span class="co">#   spp_name = &quot;Caproidae&quot;,</span></span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a><span class="co">#   latin_name = &quot;Caproidae&quot;,</span></span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a><span class="co">#   rfmo = NA,</span></span>
+<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a><span class="co">#   rfmo_stock_id = NA,</span></span>
+<span id="cb7-26"><a href="#cb7-26" tabindex="-1"></a><span class="co">#   x3a_code = NA,</span></span>
+<span id="cb7-27"><a href="#cb7-27" tabindex="-1"></a><span class="co">#   worms_aphia_id = 125613,</span></span>
+<span id="cb7-28"><a href="#cb7-28" tabindex="-1"></a><span class="co">#   fides_area = NA,</span></span>
+<span id="cb7-29"><a href="#cb7-29" tabindex="-1"></a><span class="co">#   area = NA,</span></span>
+<span id="cb7-30"><a href="#cb7-30" tabindex="-1"></a><span class="co">#   area_bis = &quot;27_6,27_7,27_8&quot;,</span></span>
+<span id="cb7-31"><a href="#cb7-31" tabindex="-1"></a><span class="co">#   area_rdb = NA,</span></span>
+<span id="cb7-32"><a href="#cb7-32" tabindex="-1"></a><span class="co">#   tac_area_description = NA,</span></span>
+<span id="cb7-33"><a href="#cb7-33" tabindex="-1"></a><span class="co">#   comments = &quot;Known issue: wrong species level&quot;,</span></span>
+<span id="cb7-34"><a href="#cb7-34" tabindex="-1"></a><span class="co">#   latin_name_join =  &quot;Caproidae&quot;,</span></span>
+<span id="cb7-35"><a href="#cb7-35" tabindex="-1"></a><span class="co">#   include_in_table_2.1 = &quot;no&quot;,</span></span>
+<span id="cb7-36"><a href="#cb7-36" tabindex="-1"></a><span class="co">#   comments_dev = NA</span></span>
+<span id="cb7-37"><a href="#cb7-37" tabindex="-1"></a><span class="co"># ) # 20240529 - Since the quota in general is for caproidae, then a line with caproidae will be added appropriated places</span></span>
+<span id="cb7-38"><a href="#cb7-38" tabindex="-1"></a></span>
+<span id="cb7-39"><a href="#cb7-39" tabindex="-1"></a><span class="co"># trachurus &lt;- data.frame(</span></span>
+<span id="cb7-40"><a href="#cb7-40" tabindex="-1"></a><span class="co">#   region = NA,</span></span>
+<span id="cb7-41"><a href="#cb7-41" tabindex="-1"></a><span class="co">#   spp_name = &quot;Trachurus&quot;,</span></span>
+<span id="cb7-42"><a href="#cb7-42" tabindex="-1"></a><span class="co">#   latin_name = &quot;Trachurus&quot;,</span></span>
+<span id="cb7-43"><a href="#cb7-43" tabindex="-1"></a><span class="co">#   rfmo = NA,</span></span>
+<span id="cb7-44"><a href="#cb7-44" tabindex="-1"></a><span class="co">#   rfmo_stock_id = NA,</span></span>
+<span id="cb7-45"><a href="#cb7-45" tabindex="-1"></a><span class="co">#   x3a_code = NA,</span></span>
+<span id="cb7-46"><a href="#cb7-46" tabindex="-1"></a><span class="co">#   worms_aphia_id = NA,</span></span>
+<span id="cb7-47"><a href="#cb7-47" tabindex="-1"></a><span class="co">#   fides_area = NA,</span></span>
+<span id="cb7-48"><a href="#cb7-48" tabindex="-1"></a><span class="co">#   area = NA,</span></span>
+<span id="cb7-49"><a href="#cb7-49" tabindex="-1"></a><span class="co">#   area_bis = &quot;27_2_A,27_4_B,27_4_C,27_7_D,27_8,27_9,27_10,27_4_A,27_5_B,27_6_A,27_7_A,27_7_B,27_7_C,27_7_E,27_7_F,27_7_G,27_7_H,27_7_J,27_7_K,27_8&quot;,</span></span>
+<span id="cb7-50"><a href="#cb7-50" tabindex="-1"></a><span class="co">#   area_rdb = NA,</span></span>
+<span id="cb7-51"><a href="#cb7-51" tabindex="-1"></a><span class="co">#   tac_area_description = NA,</span></span>
+<span id="cb7-52"><a href="#cb7-52" tabindex="-1"></a><span class="co">#   comments = &quot;Known issue: wrong species level&quot;,</span></span>
+<span id="cb7-53"><a href="#cb7-53" tabindex="-1"></a><span class="co">#   latin_name_join =  &quot;Trachurus&quot;,</span></span>
+<span id="cb7-54"><a href="#cb7-54" tabindex="-1"></a><span class="co">#   include_in_table_2.1 = &quot;no&quot;,</span></span>
+<span id="cb7-55"><a href="#cb7-55" tabindex="-1"></a><span class="co">#   comments_dev = NA</span></span>
+<span id="cb7-56"><a href="#cb7-56" tabindex="-1"></a><span class="co"># ) # 20240529 - Since the quota in general is for JAX, then a line with Trachurus will be added appropriated places</span></span>
+<span id="cb7-57"><a href="#cb7-57" tabindex="-1"></a></span>
+<span id="cb7-58"><a href="#cb7-58" tabindex="-1"></a>coregonus <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb7-59"><a href="#cb7-59" tabindex="-1"></a>  <span class="at">region =</span> <span class="cn">NA</span>,</span>
+<span id="cb7-60"><a href="#cb7-60" tabindex="-1"></a>  <span class="at">spp_name =</span> <span class="st">&quot;Coregonus&quot;</span>,</span>
+<span id="cb7-61"><a href="#cb7-61" tabindex="-1"></a>  <span class="at">latin_name =</span> <span class="st">&quot;Coregonus&quot;</span>,</span>
+<span id="cb7-62"><a href="#cb7-62" tabindex="-1"></a>  <span class="at">rfmo =</span> <span class="cn">NA</span>,</span>
+<span id="cb7-63"><a href="#cb7-63" tabindex="-1"></a>  <span class="at">rfmo_stock_id =</span> <span class="cn">NA</span>,</span>
+<span id="cb7-64"><a href="#cb7-64" tabindex="-1"></a>  <span class="at">x3a_code =</span> <span class="cn">NA</span>,</span>
+<span id="cb7-65"><a href="#cb7-65" tabindex="-1"></a>  <span class="at">worms_aphia_id =</span> <span class="cn">NA</span>,</span>
+<span id="cb7-66"><a href="#cb7-66" tabindex="-1"></a>  <span class="at">fides_area =</span> <span class="cn">NA</span>,</span>
+<span id="cb7-67"><a href="#cb7-67" tabindex="-1"></a>  <span class="at">area =</span> <span class="cn">NA</span>,</span>
+<span id="cb7-68"><a href="#cb7-68" tabindex="-1"></a>  <span class="at">area_bis =</span> <span class="st">&quot;27_3_C_22,27_3_B_23,27_3_D_24,27_3_D_25,27_3_D_26,27_3_D_27,27_3_D_28,27_3_D_29,27_3_D_30,27_3_D_31,27_3_D_32&quot;</span>,</span>
+<span id="cb7-69"><a href="#cb7-69" tabindex="-1"></a>  <span class="at">area_rdb =</span> <span class="cn">NA</span>,</span>
+<span id="cb7-70"><a href="#cb7-70" tabindex="-1"></a>  <span class="at">tac_area_description =</span> <span class="cn">NA</span>,</span>
+<span id="cb7-71"><a href="#cb7-71" tabindex="-1"></a>  <span class="at">comments =</span> <span class="st">&quot;Known issue: wrong species level&quot;</span>,</span>
+<span id="cb7-72"><a href="#cb7-72" tabindex="-1"></a>  <span class="at">latin_name_join =</span> <span class="st">&quot;Coregonus&quot;</span>,</span>
+<span id="cb7-73"><a href="#cb7-73" tabindex="-1"></a>  <span class="at">include_in_table_2.1 =</span> <span class="st">&quot;no&quot;</span>,</span>
+<span id="cb7-74"><a href="#cb7-74" tabindex="-1"></a>  <span class="at">comments_dev =</span> <span class="cn">NA</span></span>
+<span id="cb7-75"><a href="#cb7-75" tabindex="-1"></a>)</span>
+<span id="cb7-76"><a href="#cb7-76" tabindex="-1"></a></span>
+<span id="cb7-77"><a href="#cb7-77" tabindex="-1"></a><span class="co"># red_27 &lt;- data.frame(</span></span>
+<span id="cb7-78"><a href="#cb7-78" tabindex="-1"></a><span class="co">#   region = NA,</span></span>
+<span id="cb7-79"><a href="#cb7-79" tabindex="-1"></a><span class="co">#   spp_name = &quot;Sebastes&quot;,</span></span>
+<span id="cb7-80"><a href="#cb7-80" tabindex="-1"></a><span class="co">#   latin_name = &quot;Sebastes&quot;,</span></span>
+<span id="cb7-81"><a href="#cb7-81" tabindex="-1"></a><span class="co">#   rfmo = NA,</span></span>
+<span id="cb7-82"><a href="#cb7-82" tabindex="-1"></a><span class="co">#   rfmo_stock_id = NA,</span></span>
+<span id="cb7-83"><a href="#cb7-83" tabindex="-1"></a><span class="co">#   x3a_code = NA,</span></span>
+<span id="cb7-84"><a href="#cb7-84" tabindex="-1"></a><span class="co">#   worms_aphia_id = NA,</span></span>
+<span id="cb7-85"><a href="#cb7-85" tabindex="-1"></a><span class="co">#   fides_area = NA,</span></span>
+<span id="cb7-86"><a href="#cb7-86" tabindex="-1"></a><span class="co">#   area = NA,</span></span>
+<span id="cb7-87"><a href="#cb7-87" tabindex="-1"></a><span class="co">#   area_bis = &quot;27_1,27_2,27_5,27_12,27_14&quot;,</span></span>
+<span id="cb7-88"><a href="#cb7-88" tabindex="-1"></a><span class="co">#   area_rdb = NA,</span></span>
+<span id="cb7-89"><a href="#cb7-89" tabindex="-1"></a><span class="co">#   tac_area_description = NA,</span></span>
+<span id="cb7-90"><a href="#cb7-90" tabindex="-1"></a><span class="co">#   comments = &quot;Known issue: wrong species level&quot;,</span></span>
+<span id="cb7-91"><a href="#cb7-91" tabindex="-1"></a><span class="co">#   latin_name_join =  &quot;Sebastes&quot;,</span></span>
+<span id="cb7-92"><a href="#cb7-92" tabindex="-1"></a><span class="co">#   include_in_table_2.1 = &quot;no&quot;,</span></span>
+<span id="cb7-93"><a href="#cb7-93" tabindex="-1"></a><span class="co">#   comments_dev = NA</span></span>
+<span id="cb7-94"><a href="#cb7-94" tabindex="-1"></a><span class="co"># ) # 20240529 - Since the quota in general is for RED, then a line with Sebastes will be added appropriated places</span></span>
+<span id="cb7-95"><a href="#cb7-95" tabindex="-1"></a></span>
+<span id="cb7-96"><a href="#cb7-96" tabindex="-1"></a></span>
+<span id="cb7-97"><a href="#cb7-97" tabindex="-1"></a></span>
+<span id="cb7-98"><a href="#cb7-98" tabindex="-1"></a>linkage <span class="ot">&lt;-</span> <span class="fu">rbind</span>(linkage, algae, coregonus)</span></code></pre></div>
+</div>
+</div>
+<div id="areas" class="section level1">
+<h1>Areas</h1>
+<div id="correct-fides_area" class="section level2">
+<h2>Correct fides_area</h2>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area[linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Pleuronectes platessa&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>  linkage<span class="sc">$</span>region <span class="sc">==</span> <span class="st">&quot;North-East Atlantic&quot;</span> <span class="sc">&amp;</span></span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a>  linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;8, 9, 10&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;8/3411&quot;</span></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="co"># Removing blanks from fides_area</span></span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;&quot;</span>, linkage<span class="sc">$</span>fides_area)</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area[linkage<span class="sc">$</span>fides_area <span class="sc">==</span> <span class="st">&quot;NoTAC&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;No TAC&quot;</span></span></code></pre></div>
+</div>
+<div id="check-and-correct-area_bis" class="section level2">
+<h2>Check and correct area_bis</h2>
+<div class="sourceCode" id="cb9"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" tabindex="-1"></a><span class="co"># Removing blanks from area_bis</span></span>
+<span id="cb9-2"><a href="#cb9-2" tabindex="-1"></a>linkage<span class="sc">$</span>area_bis <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot; &quot;</span>, <span class="st">&quot;&quot;</span>, linkage<span class="sc">$</span>area_bis)</span>
+<span id="cb9-3"><a href="#cb9-3" tabindex="-1"></a></span>
+<span id="cb9-4"><a href="#cb9-4" tabindex="-1"></a><span class="co"># Correcting area_bis</span></span>
+<span id="cb9-5"><a href="#cb9-5" tabindex="-1"></a></span>
+<span id="cb9-6"><a href="#cb9-6" tabindex="-1"></a>linkage<span class="sc">$</span>area_bis <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;12_6&quot;</span>, <span class="st">&quot;21_6&quot;</span>, linkage<span class="sc">$</span>area_bis)</span>
+<span id="cb9-7"><a href="#cb9-7" tabindex="-1"></a>linkage<span class="sc">$</span>area_bis <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;51.57&quot;</span>, <span class="st">&quot;51,57&quot;</span>, linkage<span class="sc">$</span>area_bis) <span class="co"># Area code copied from a very old linkage file</span></span>
+<span id="cb9-8"><a href="#cb9-8" tabindex="-1"></a>linkage<span class="sc">$</span>area_bis <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;81.870000000000005&quot;</span>, <span class="st">&quot;81,87&quot;</span>, linkage<span class="sc">$</span>area_bis) <span class="co"># Area code copied from a very old linkage file</span></span>
+<span id="cb9-9"><a href="#cb9-9" tabindex="-1"></a>linkage<span class="sc">$</span>area_bis <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;_21_2&quot;</span>, <span class="st">&quot;21_2&quot;</span>, linkage<span class="sc">$</span>area_bis)</span>
+<span id="cb9-10"><a href="#cb9-10" tabindex="-1"></a>linkage<span class="sc">$</span>area_bis <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;28_7_8&quot;</span>, <span class="st">&quot;27_8&quot;</span>, linkage<span class="sc">$</span>area_bis)</span>
+<span id="cb9-11"><a href="#cb9-11" tabindex="-1"></a>linkage<span class="sc">$</span>area_bis <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;21_3_0&quot;</span>, <span class="st">&quot;21_3_O&quot;</span>, linkage<span class="sc">$</span>area_bis)</span></code></pre></div>
+<div class="sourceCode" id="cb10"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(test_1, <span class="at">caption =</span> <span class="st">&quot;Visual inspecion of area_bis&quot;</span>)</span></code></pre></div>
+<table>
+<caption>Visual inspecion of area_bis</caption>
+<thead>
+<tr class="header">
+<th align="left">area_bis</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">21</td>
+</tr>
+<tr class="odd">
+<td align="left">21_1</td>
+</tr>
+<tr class="even">
+<td align="left">21_2</td>
+</tr>
+<tr class="odd">
+<td align="left">21_2_J</td>
+</tr>
+<tr class="even">
+<td align="left">21_3</td>
+</tr>
+<tr class="odd">
+<td align="left">21_3_K</td>
+</tr>
+<tr class="even">
+<td align="left">21_3_L</td>
+</tr>
+<tr class="odd">
+<td align="left">21_3_M</td>
+</tr>
+<tr class="even">
+<td align="left">21_3_N</td>
+</tr>
+<tr class="odd">
+<td align="left">21_3_O</td>
+</tr>
+<tr class="even">
+<td align="left">21_3_P_S</td>
+</tr>
+<tr class="odd">
+<td align="left">21_4</td>
+</tr>
+<tr class="even">
+<td align="left">21_5</td>
+</tr>
+<tr class="odd">
+<td align="left">21_6</td>
+</tr>
+<tr class="even">
+<td align="left">21_6_G</td>
+</tr>
+<tr class="odd">
+<td align="left">27</td>
+</tr>
+<tr class="even">
+<td align="left">27_1</td>
+</tr>
+<tr class="odd">
+<td align="left">27_10</td>
+</tr>
+<tr class="even">
+<td align="left">27_11</td>
+</tr>
+<tr class="odd">
+<td align="left">27_12</td>
+</tr>
+<tr class="even">
+<td align="left">27_13</td>
+</tr>
+<tr class="odd">
+<td align="left">27_14</td>
+</tr>
+<tr class="even">
+<td align="left">27_2</td>
+</tr>
+<tr class="odd">
+<td align="left">27_2_A</td>
+</tr>
+<tr class="even">
+<td align="left">27_3</td>
+</tr>
+<tr class="odd">
+<td align="left">27_3_A</td>
+</tr>
+<tr class="even">
+<td align="left">27_3_A_20</td>
+</tr>
+<tr class="odd">
+<td align="left">27_3_A_21</td>
+</tr>
+<tr class="even">
+<td align="left">27_3_B_23</td>
+</tr>
+<tr class="odd">
+<td align="left">27_3_C_22</td>
+</tr>
+<tr class="even">
+<td align="left">27_3_D</td>
+</tr>
+<tr class="odd">
+<td align="left">27_3_D_24</td>
+</tr>
+<tr class="even">
+<td align="left">27_3_D_25</td>
+</tr>
+<tr class="odd">
+<td align="left">27_3_D_26</td>
+</tr>
+<tr class="even">
+<td align="left">27_3_D_27</td>
+</tr>
+<tr class="odd">
+<td align="left">27_3_D_28</td>
+</tr>
+<tr class="even">
+<td align="left">27_3_D_28_1</td>
+</tr>
+<tr class="odd">
+<td align="left">27_3_D_28_2</td>
+</tr>
+<tr class="even">
+<td align="left">27_3_D_29</td>
+</tr>
+<tr class="odd">
+<td align="left">27_3_D_30</td>
+</tr>
+<tr class="even">
+<td align="left">27_3_D_31</td>
+</tr>
+<tr class="odd">
+<td align="left">27_3_D_32</td>
+</tr>
+<tr class="even">
+<td align="left">27_4</td>
+</tr>
+<tr class="odd">
+<td align="left">27_4_A</td>
+</tr>
+<tr class="even">
+<td align="left">27_4_B</td>
+</tr>
+<tr class="odd">
+<td align="left">27_4_C</td>
+</tr>
+<tr class="even">
+<td align="left">27_5</td>
+</tr>
+<tr class="odd">
+<td align="left">27_5_A</td>
+</tr>
+<tr class="even">
+<td align="left">27_5_B</td>
+</tr>
+<tr class="odd">
+<td align="left">27_6</td>
+</tr>
+<tr class="even">
+<td align="left">27_6_A</td>
+</tr>
+<tr class="odd">
+<td align="left">27_6_B</td>
+</tr>
+<tr class="even">
+<td align="left">27_7</td>
+</tr>
+<tr class="odd">
+<td align="left">27_7_A</td>
+</tr>
+<tr class="even">
+<td align="left">27_7_B</td>
+</tr>
+<tr class="odd">
+<td align="left">27_7_C</td>
+</tr>
+<tr class="even">
+<td align="left">27_7_D</td>
+</tr>
+<tr class="odd">
+<td align="left">27_7_E</td>
+</tr>
+<tr class="even">
+<td align="left">27_7_F</td>
+</tr>
+<tr class="odd">
+<td align="left">27_7_G</td>
+</tr>
+<tr class="even">
+<td align="left">27_7_H</td>
+</tr>
+<tr class="odd">
+<td align="left">27_7_J</td>
+</tr>
+<tr class="even">
+<td align="left">27_7_K</td>
+</tr>
+<tr class="odd">
+<td align="left">27_8</td>
+</tr>
+<tr class="even">
+<td align="left">27_8_A</td>
+</tr>
+<tr class="odd">
+<td align="left">27_8_B</td>
+</tr>
+<tr class="even">
+<td align="left">27_8_C</td>
+</tr>
+<tr class="odd">
+<td align="left">27_8_D</td>
+</tr>
+<tr class="even">
+<td align="left">27_8_E</td>
+</tr>
+<tr class="odd">
+<td align="left">27_9</td>
+</tr>
+<tr class="even">
+<td align="left">27_9_A</td>
+</tr>
+<tr class="odd">
+<td align="left">27_9_B</td>
+</tr>
+<tr class="even">
+<td align="left">31</td>
+</tr>
+<tr class="odd">
+<td align="left">34</td>
+</tr>
+<tr class="even">
+<td align="left">34_1_1</td>
+</tr>
+<tr class="odd">
+<td align="left">34_1_2</td>
+</tr>
+<tr class="even">
+<td align="left">34_1_3</td>
+</tr>
+<tr class="odd">
+<td align="left">34_2</td>
+</tr>
+<tr class="even">
+<td align="left">34_3_1</td>
+</tr>
+<tr class="odd">
+<td align="left">34_3_3</td>
+</tr>
+<tr class="even">
+<td align="left">34_3_4</td>
+</tr>
+<tr class="odd">
+<td align="left">34_3_5</td>
+</tr>
+<tr class="even">
+<td align="left">34_3_6</td>
+</tr>
+<tr class="odd">
+<td align="left">37</td>
+</tr>
+<tr class="even">
+<td align="left">37_1_1</td>
+</tr>
+<tr class="odd">
+<td align="left">37_1_2</td>
+</tr>
+<tr class="even">
+<td align="left">37_1_3</td>
+</tr>
+<tr class="odd">
+<td align="left">37_2_1</td>
+</tr>
+<tr class="even">
+<td align="left">37_2_2</td>
+</tr>
+<tr class="odd">
+<td align="left">37_3_1</td>
+</tr>
+<tr class="even">
+<td align="left">37_3_2</td>
+</tr>
+<tr class="odd">
+<td align="left">37_4_1</td>
+</tr>
+<tr class="even">
+<td align="left">37_4_2</td>
+</tr>
+<tr class="odd">
+<td align="left">41</td>
+</tr>
+<tr class="even">
+<td align="left">47</td>
+</tr>
+<tr class="odd">
+<td align="left">48</td>
+</tr>
+<tr class="even">
+<td align="left">51</td>
+</tr>
+<tr class="odd">
+<td align="left">57</td>
+</tr>
+<tr class="even">
+<td align="left">58</td>
+</tr>
+<tr class="odd">
+<td align="left">71</td>
+</tr>
+<tr class="even">
+<td align="left">77</td>
+</tr>
+<tr class="odd">
+<td align="left">81</td>
+</tr>
+<tr class="even">
+<td align="left">87</td>
+</tr>
+<tr class="odd">
+<td align="left">88</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="check-and-correct-area_rdb" class="section level2">
+<h2>Check and correct area_rdb</h2>
+<div id="notes-from-2023" class="section level3">
+<h3>Notes from 2023</h3>
+<p>There is something wrong with some of the areas. A comma is missing
+between lists of areas, which means that not all areas were included.
+The error was spotted by Estonia and Latvia.</p>
+<p>Estonia:“Table 2.1 some of our landing data is wrong, which means
+that total EU landing is also wrong, and it affects all MS fishing those
+stocks (in column J where share of EU landing is calculated). Namely FLE
+(49t vs 133t), TRS (12t vs 16t) and SPR (15350t vs 25858t) landings are
+affected. I double checked our uploaded data files – those were correct,
+so something has happened in the RDB either while extracting the data or
+during uploading… a. Also if you compare the landings between sheets”2.1
+Stocks” and “2.1 Control” then some of them do not match (i.e. EST SPR
+15381t vs 15350t and HER central 11403t vs 11370t ). Differences are
+rather small, but there should be no differences!”</p>
+<p>Latvia:“Values for Cod, Sprat and Flounder are not correct: it should
+be Cod - 35t, Sprat - 29780t and Flounder - 527t”</p>
+<p><strong>I have checked with the amount after fixing area_rdb
+regarding missing landings - this seems to be fixed now</strong> -
+except LVA cod landings where I get a mean of 854 tons</p>
+<p><strong>Problems with the mean</strong> - I have filled NA with 0 in
+the input data, so now the mean is correct for EST</p>
+<div class="sourceCode" id="cb11"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(test_3, <span class="at">caption =</span> <span class="st">&quot;Visual inspecion of area_rdb&quot;</span>)</span></code></pre></div>
+<table>
+<caption>Visual inspecion of area_rdb</caption>
+<thead>
+<tr class="header">
+<th align="left">area_rdb</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">21</td>
+</tr>
+<tr class="odd">
+<td align="left">21.0</td>
+</tr>
+<tr class="even">
+<td align="left">21.0.A</td>
+</tr>
+<tr class="odd">
+<td align="left">21.0.B</td>
+</tr>
+<tr class="even">
+<td align="left">21.1</td>
+</tr>
+<tr class="odd">
+<td align="left">21.1.A</td>
+</tr>
+<tr class="even">
+<td align="left">21.1.B</td>
+</tr>
+<tr class="odd">
+<td align="left">21.1.C</td>
+</tr>
+<tr class="even">
+<td align="left">21.1.D</td>
+</tr>
+<tr class="odd">
+<td align="left">21.1.E</td>
+</tr>
+<tr class="even">
+<td align="left">21.1.F</td>
+</tr>
+<tr class="odd">
+<td align="left">21.2</td>
+</tr>
+<tr class="even">
+<td align="left">21.2.G</td>
+</tr>
+<tr class="odd">
+<td align="left">21.2.H</td>
+</tr>
+<tr class="even">
+<td align="left">21.2.J</td>
+</tr>
+<tr class="odd">
+<td align="left">21.3</td>
+</tr>
+<tr class="even">
+<td align="left">21.3.K</td>
+</tr>
+<tr class="odd">
+<td align="left">21.3.L</td>
+</tr>
+<tr class="even">
+<td align="left">21.3.M</td>
+</tr>
+<tr class="odd">
+<td align="left">21.3.N</td>
+</tr>
+<tr class="even">
+<td align="left">21.3.O</td>
+</tr>
+<tr class="odd">
+<td align="left">21.3.P</td>
+</tr>
+<tr class="even">
+<td align="left">21.3.P.n</td>
+</tr>
+<tr class="odd">
+<td align="left">21.3.P.s</td>
+</tr>
+<tr class="even">
+<td align="left">21.4</td>
+</tr>
+<tr class="odd">
+<td align="left">21.4.R</td>
+</tr>
+<tr class="even">
+<td align="left">21.4.S</td>
+</tr>
+<tr class="odd">
+<td align="left">21.4.T</td>
+</tr>
+<tr class="even">
+<td align="left">21.4.V</td>
+</tr>
+<tr class="odd">
+<td align="left">21.4.V.n</td>
+</tr>
+<tr class="even">
+<td align="left">21.4.V.s</td>
+</tr>
+<tr class="odd">
+<td align="left">21.4.W</td>
+</tr>
+<tr class="even">
+<td align="left">21.4.X</td>
+</tr>
+<tr class="odd">
+<td align="left">21.5</td>
+</tr>
+<tr class="even">
+<td align="left">21.5.Y</td>
+</tr>
+<tr class="odd">
+<td align="left">21.5.Z</td>
+</tr>
+<tr class="even">
+<td align="left">21.5.Z.e</td>
+</tr>
+<tr class="odd">
+<td align="left">21.5.Z.w</td>
+</tr>
+<tr class="even">
+<td align="left">21.6</td>
+</tr>
+<tr class="odd">
+<td align="left">21.6.A</td>
+</tr>
+<tr class="even">
+<td align="left">21.6.B</td>
+</tr>
+<tr class="odd">
+<td align="left">21.6.C</td>
+</tr>
+<tr class="even">
+<td align="left">21.6.D</td>
+</tr>
+<tr class="odd">
+<td align="left">21.6.E</td>
+</tr>
+<tr class="even">
+<td align="left">21.6.F</td>
+</tr>
+<tr class="odd">
+<td align="left">21.6.G</td>
+</tr>
+<tr class="even">
+<td align="left">21.6.H</td>
+</tr>
+<tr class="odd">
+<td align="left">27</td>
+</tr>
+<tr class="even">
+<td align="left">27.1</td>
+</tr>
+<tr class="odd">
+<td align="left">27.1.a</td>
+</tr>
+<tr class="even">
+<td align="left">27.1.b</td>
+</tr>
+<tr class="odd">
+<td align="left">27.10</td>
+</tr>
+<tr class="even">
+<td align="left">27.10.a</td>
+</tr>
+<tr class="odd">
+<td align="left">27.10.a.1</td>
+</tr>
+<tr class="even">
+<td align="left">27.10.a.2</td>
+</tr>
+<tr class="odd">
+<td align="left">27.10.b</td>
+</tr>
+<tr class="even">
+<td align="left">27.10.b.1</td>
+</tr>
+<tr class="odd">
+<td align="left">27.10.b.2</td>
+</tr>
+<tr class="even">
+<td align="left">27.12</td>
+</tr>
+<tr class="odd">
+<td align="left">27.12.a</td>
+</tr>
+<tr class="even">
+<td align="left">27.12.a.1</td>
+</tr>
+<tr class="odd">
+<td align="left">27.12.a.2</td>
+</tr>
+<tr class="even">
+<td align="left">27.12.a.3</td>
+</tr>
+<tr class="odd">
+<td align="left">27.12.a.4</td>
+</tr>
+<tr class="even">
+<td align="left">27.12.b</td>
+</tr>
+<tr class="odd">
+<td align="left">27.12.c</td>
+</tr>
+<tr class="even">
+<td align="left">27.14</td>
+</tr>
+<tr class="odd">
+<td align="left">27.14.a</td>
+</tr>
+<tr class="even">
+<td align="left">27.14.b</td>
+</tr>
+<tr class="odd">
+<td align="left">27.14.b.1</td>
+</tr>
+<tr class="even">
+<td align="left">27.14.b.2</td>
+</tr>
+<tr class="odd">
+<td align="left">27.2</td>
+</tr>
+<tr class="even">
+<td align="left">27.2.a</td>
+</tr>
+<tr class="odd">
+<td align="left">27.2.a.1</td>
+</tr>
+<tr class="even">
+<td align="left">27.2.a.2</td>
+</tr>
+<tr class="odd">
+<td align="left">27.2.b</td>
+</tr>
+<tr class="even">
+<td align="left">27.2.b.1</td>
+</tr>
+<tr class="odd">
+<td align="left">27.2.b.2</td>
+</tr>
+<tr class="even">
+<td align="left">27.3</td>
+</tr>
+<tr class="odd">
+<td align="left">27.3.a</td>
+</tr>
+<tr class="even">
+<td align="left">27.3.a.20</td>
+</tr>
+<tr class="odd">
+<td align="left">27.3.a.21</td>
+</tr>
+<tr class="even">
+<td align="left">27.3.b</td>
+</tr>
+<tr class="odd">
+<td align="left">27.3.b.23</td>
+</tr>
+<tr class="even">
+<td align="left">27.3.c</td>
+</tr>
+<tr class="odd">
+<td align="left">27.3.c.22</td>
+</tr>
+<tr class="even">
+<td align="left">27.3.d</td>
+</tr>
+<tr class="odd">
+<td align="left">27.3.d.24</td>
+</tr>
+<tr class="even">
+<td align="left">27.3.d.25</td>
+</tr>
+<tr class="odd">
+<td align="left">27.3.d.26</td>
+</tr>
+<tr class="even">
+<td align="left">27.3.d.27</td>
+</tr>
+<tr class="odd">
+<td align="left">27.3.d.28</td>
+</tr>
+<tr class="even">
+<td align="left">27.3.d.28.1</td>
+</tr>
+<tr class="odd">
+<td align="left">27.3.d.28.2</td>
+</tr>
+<tr class="even">
+<td align="left">27.3.d.29</td>
+</tr>
+<tr class="odd">
+<td align="left">27.3.d.30</td>
+</tr>
+<tr class="even">
+<td align="left">27.3.d.31</td>
+</tr>
+<tr class="odd">
+<td align="left">27.3.d.32</td>
+</tr>
+<tr class="even">
+<td align="left">27.4</td>
+</tr>
+<tr class="odd">
+<td align="left">27.4.a</td>
+</tr>
+<tr class="even">
+<td align="left">27.4.a.e</td>
+</tr>
+<tr class="odd">
+<td align="left">27.4.a.w</td>
+</tr>
+<tr class="even">
+<td align="left">27.4.b</td>
+</tr>
+<tr class="odd">
+<td align="left">27.4.b.e</td>
+</tr>
+<tr class="even">
+<td align="left">27.4.b.w</td>
+</tr>
+<tr class="odd">
+<td align="left">27.4.c</td>
+</tr>
+<tr class="even">
+<td align="left">27.5</td>
+</tr>
+<tr class="odd">
+<td align="left">27.5.a</td>
+</tr>
+<tr class="even">
+<td align="left">27.5.a.1</td>
+</tr>
+<tr class="odd">
+<td align="left">27.5.a.2</td>
+</tr>
+<tr class="even">
+<td align="left">27.5.b</td>
+</tr>
+<tr class="odd">
+<td align="left">27.5.b.1</td>
+</tr>
+<tr class="even">
+<td align="left">27.5.b.1.a</td>
+</tr>
+<tr class="odd">
+<td align="left">27.5.b.1.b</td>
+</tr>
+<tr class="even">
+<td align="left">27.5.b.2</td>
+</tr>
+<tr class="odd">
+<td align="left">27.6</td>
+</tr>
+<tr class="even">
+<td align="left">27.6.a</td>
+</tr>
+<tr class="odd">
+<td align="left">27.6.a.n</td>
+</tr>
+<tr class="even">
+<td align="left">27.6.a.s</td>
+</tr>
+<tr class="odd">
+<td align="left">27.6.b</td>
+</tr>
+<tr class="even">
+<td align="left">27.6.b.1</td>
+</tr>
+<tr class="odd">
+<td align="left">27.6.b.2</td>
+</tr>
+<tr class="even">
+<td align="left">27.7</td>
+</tr>
+<tr class="odd">
+<td align="left">27.7.a</td>
+</tr>
+<tr class="even">
+<td align="left">27.7.b</td>
+</tr>
+<tr class="odd">
+<td align="left">27.7.c</td>
+</tr>
+<tr class="even">
+<td align="left">27.7.c.1</td>
+</tr>
+<tr class="odd">
+<td align="left">27.7.c.2</td>
+</tr>
+<tr class="even">
+<td align="left">27.7.d</td>
+</tr>
+<tr class="odd">
+<td align="left">27.7.e</td>
+</tr>
+<tr class="even">
+<td align="left">27.7.f</td>
+</tr>
+<tr class="odd">
+<td align="left">27.7.g</td>
+</tr>
+<tr class="even">
+<td align="left">27.7.h</td>
+</tr>
+<tr class="odd">
+<td align="left">27.7.j</td>
+</tr>
+<tr class="even">
+<td align="left">27.7.j.1</td>
+</tr>
+<tr class="odd">
+<td align="left">27.7.j.2</td>
+</tr>
+<tr class="even">
+<td align="left">27.7.k</td>
+</tr>
+<tr class="odd">
+<td align="left">27.7.k.1</td>
+</tr>
+<tr class="even">
+<td align="left">27.7.k.2</td>
+</tr>
+<tr class="odd">
+<td align="left">27.8</td>
+</tr>
+<tr class="even">
+<td align="left">27.8.a</td>
+</tr>
+<tr class="odd">
+<td align="left">27.8.b</td>
+</tr>
+<tr class="even">
+<td align="left">27.8.c</td>
+</tr>
+<tr class="odd">
+<td align="left">27.8.d</td>
+</tr>
+<tr class="even">
+<td align="left">27.8.d.1</td>
+</tr>
+<tr class="odd">
+<td align="left">27.8.d.2</td>
+</tr>
+<tr class="even">
+<td align="left">27.8.e</td>
+</tr>
+<tr class="odd">
+<td align="left">27.8.e.1</td>
+</tr>
+<tr class="even">
+<td align="left">27.8.e.2</td>
+</tr>
+<tr class="odd">
+<td align="left">27.9</td>
+</tr>
+<tr class="even">
+<td align="left">27.9.a</td>
+</tr>
+<tr class="odd">
+<td align="left">27.9.b</td>
+</tr>
+<tr class="even">
+<td align="left">27.9.b.1</td>
+</tr>
+<tr class="odd">
+<td align="left">27.9.b.2</td>
+</tr>
+<tr class="even">
+<td align="left">27_11</td>
+</tr>
+<tr class="odd">
+<td align="left">27_13</td>
+</tr>
+<tr class="even">
+<td align="left">31</td>
+</tr>
+<tr class="odd">
+<td align="left">34</td>
+</tr>
+<tr class="even">
+<td align="left">34.1</td>
+</tr>
+<tr class="odd">
+<td align="left">34.1.1</td>
+</tr>
+<tr class="even">
+<td align="left">34.1.1.1</td>
+</tr>
+<tr class="odd">
+<td align="left">34.1.1.2</td>
+</tr>
+<tr class="even">
+<td align="left">34.1.1.3</td>
+</tr>
+<tr class="odd">
+<td align="left">34.1.2</td>
+</tr>
+<tr class="even">
+<td align="left">34.1.3</td>
+</tr>
+<tr class="odd">
+<td align="left">34.1.3.1</td>
+</tr>
+<tr class="even">
+<td align="left">34.1.3.2</td>
+</tr>
+<tr class="odd">
+<td align="left">34.2</td>
+</tr>
+<tr class="even">
+<td align="left">34.3</td>
+</tr>
+<tr class="odd">
+<td align="left">34.3.1</td>
+</tr>
+<tr class="even">
+<td align="left">34.3.1.1</td>
+</tr>
+<tr class="odd">
+<td align="left">34.3.1.2</td>
+</tr>
+<tr class="even">
+<td align="left">34.3.1.3</td>
+</tr>
+<tr class="odd">
+<td align="left">34.3.2</td>
+</tr>
+<tr class="even">
+<td align="left">34.3.3</td>
+</tr>
+<tr class="odd">
+<td align="left">34.3.4</td>
+</tr>
+<tr class="even">
+<td align="left">34.3.5</td>
+</tr>
+<tr class="odd">
+<td align="left">34.3.6</td>
+</tr>
+<tr class="even">
+<td align="left">34.4</td>
+</tr>
+<tr class="odd">
+<td align="left">34.4.1</td>
+</tr>
+<tr class="even">
+<td align="left">34.4.2</td>
+</tr>
+<tr class="odd">
+<td align="left">37</td>
+</tr>
+<tr class="even">
+<td align="left">37_1_1</td>
+</tr>
+<tr class="odd">
+<td align="left">37_1_2</td>
+</tr>
+<tr class="even">
+<td align="left">37_1_3</td>
+</tr>
+<tr class="odd">
+<td align="left">37_2_1</td>
+</tr>
+<tr class="even">
+<td align="left">37_2_2</td>
+</tr>
+<tr class="odd">
+<td align="left">37_3_1</td>
+</tr>
+<tr class="even">
+<td align="left">37_3_2</td>
+</tr>
+<tr class="odd">
+<td align="left">37_4_1</td>
+</tr>
+<tr class="even">
+<td align="left">37_4_2</td>
+</tr>
+<tr class="odd">
+<td align="left">41</td>
+</tr>
+<tr class="even">
+<td align="left">41.1</td>
+</tr>
+<tr class="odd">
+<td align="left">41.1.1</td>
+</tr>
+<tr class="even">
+<td align="left">41.1.2</td>
+</tr>
+<tr class="odd">
+<td align="left">41.1.3</td>
+</tr>
+<tr class="even">
+<td align="left">41.1.4</td>
+</tr>
+<tr class="odd">
+<td align="left">41.2</td>
+</tr>
+<tr class="even">
+<td align="left">41.2.1</td>
+</tr>
+<tr class="odd">
+<td align="left">41.2.2</td>
+</tr>
+<tr class="even">
+<td align="left">41.2.3</td>
+</tr>
+<tr class="odd">
+<td align="left">41.2.4</td>
+</tr>
+<tr class="even">
+<td align="left">41.3</td>
+</tr>
+<tr class="odd">
+<td align="left">41.3.1</td>
+</tr>
+<tr class="even">
+<td align="left">41.3.2</td>
+</tr>
+<tr class="odd">
+<td align="left">41.3.3</td>
+</tr>
+<tr class="even">
+<td align="left">47</td>
+</tr>
+<tr class="odd">
+<td align="left">47.1</td>
+</tr>
+<tr class="even">
+<td align="left">47.1.1</td>
+</tr>
+<tr class="odd">
+<td align="left">47.1.2</td>
+</tr>
+<tr class="even">
+<td align="left">47.1.3</td>
+</tr>
+<tr class="odd">
+<td align="left">47.1.4</td>
+</tr>
+<tr class="even">
+<td align="left">47.1.5</td>
+</tr>
+<tr class="odd">
+<td align="left">47.1.6</td>
+</tr>
+<tr class="even">
+<td align="left">47.2</td>
+</tr>
+<tr class="odd">
+<td align="left">47.2.1</td>
+</tr>
+<tr class="even">
+<td align="left">47.2.2</td>
+</tr>
+<tr class="odd">
+<td align="left">47.A</td>
+</tr>
+<tr class="even">
+<td align="left">47.A.0</td>
+</tr>
+<tr class="odd">
+<td align="left">47.A.1</td>
+</tr>
+<tr class="even">
+<td align="left">47.B</td>
+</tr>
+<tr class="odd">
+<td align="left">47.B.0</td>
+</tr>
+<tr class="even">
+<td align="left">47.B.1</td>
+</tr>
+<tr class="odd">
+<td align="left">47.C</td>
+</tr>
+<tr class="even">
+<td align="left">47.C.0</td>
+</tr>
+<tr class="odd">
+<td align="left">47.C.1</td>
+</tr>
+<tr class="even">
+<td align="left">47.D</td>
+</tr>
+<tr class="odd">
+<td align="left">47.D.0</td>
+</tr>
+<tr class="even">
+<td align="left">47.D.1</td>
+</tr>
+<tr class="odd">
+<td align="left">48</td>
+</tr>
+<tr class="even">
+<td align="left">48.1</td>
+</tr>
+<tr class="odd">
+<td align="left">48.2</td>
+</tr>
+<tr class="even">
+<td align="left">48.3</td>
+</tr>
+<tr class="odd">
+<td align="left">48.4</td>
+</tr>
+<tr class="even">
+<td align="left">48.5</td>
+</tr>
+<tr class="odd">
+<td align="left">48.6</td>
+</tr>
+<tr class="even">
+<td align="left">51</td>
+</tr>
+<tr class="odd">
+<td align="left">51.1</td>
+</tr>
+<tr class="even">
+<td align="left">51.2</td>
+</tr>
+<tr class="odd">
+<td align="left">51.3</td>
+</tr>
+<tr class="even">
+<td align="left">51.4</td>
+</tr>
+<tr class="odd">
+<td align="left">51.5</td>
+</tr>
+<tr class="even">
+<td align="left">51.6</td>
+</tr>
+<tr class="odd">
+<td align="left">51.7</td>
+</tr>
+<tr class="even">
+<td align="left">51.8</td>
+</tr>
+<tr class="odd">
+<td align="left">57</td>
+</tr>
+<tr class="even">
+<td align="left">57.1</td>
+</tr>
+<tr class="odd">
+<td align="left">57.2</td>
+</tr>
+<tr class="even">
+<td align="left">57.3</td>
+</tr>
+<tr class="odd">
+<td align="left">57.4</td>
+</tr>
+<tr class="even">
+<td align="left">57.5</td>
+</tr>
+<tr class="odd">
+<td align="left">57.6</td>
+</tr>
+<tr class="even">
+<td align="left">58</td>
+</tr>
+<tr class="odd">
+<td align="left">71</td>
+</tr>
+<tr class="even">
+<td align="left">77</td>
+</tr>
+<tr class="odd">
+<td align="left">81</td>
+</tr>
+<tr class="even">
+<td align="left">87</td>
+</tr>
+<tr class="odd">
+<td align="left">87.1</td>
+</tr>
+<tr class="even">
+<td align="left">87.1.1</td>
+</tr>
+<tr class="odd">
+<td align="left">87.1.2</td>
+</tr>
+<tr class="even">
+<td align="left">87.1.3</td>
+</tr>
+<tr class="odd">
+<td align="left">87.1.4</td>
+</tr>
+<tr class="even">
+<td align="left">87.2</td>
+</tr>
+<tr class="odd">
+<td align="left">87.2.1</td>
+</tr>
+<tr class="even">
+<td align="left">87.2.2</td>
+</tr>
+<tr class="odd">
+<td align="left">87.2.3</td>
+</tr>
+<tr class="even">
+<td align="left">87.2.4</td>
+</tr>
+<tr class="odd">
+<td align="left">87.2.5</td>
+</tr>
+<tr class="even">
+<td align="left">87.2.6</td>
+</tr>
+<tr class="odd">
+<td align="left">87.3</td>
+</tr>
+<tr class="even">
+<td align="left">87.3.1</td>
+</tr>
+<tr class="odd">
+<td align="left">87.3.2</td>
+</tr>
+<tr class="even">
+<td align="left">87.3.3</td>
+</tr>
+<tr class="odd">
+<td align="left">88</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="check-and-correct-area_rdbes" class="section level2">
+<h2>Check and correct area_rdbes</h2>
+<p>Same procedure as for area_rdb</p>
+<div class="sourceCode" id="cb12"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(test_3, <span class="at">caption =</span> <span class="st">&quot;Visual inspecion of area_rdbes&quot;</span>)</span></code></pre></div>
+<table>
+<caption>Visual inspecion of area_rdbes</caption>
+<thead>
+<tr class="header">
+<th align="left">area_rdbes</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left"></td>
+</tr>
+<tr class="even">
+<td align="left">21</td>
+</tr>
+<tr class="odd">
+<td align="left">21.0</td>
+</tr>
+<tr class="even">
+<td align="left">21.0.a</td>
+</tr>
+<tr class="odd">
+<td align="left">21.0.b</td>
+</tr>
+<tr class="even">
+<td align="left">21.1</td>
+</tr>
+<tr class="odd">
+<td align="left">21.1.a</td>
+</tr>
+<tr class="even">
+<td align="left">21.1.b</td>
+</tr>
+<tr class="odd">
+<td align="left">21.1.c</td>
+</tr>
+<tr class="even">
+<td align="left">21.1.d</td>
+</tr>
+<tr class="odd">
+<td align="left">21.1.e</td>
+</tr>
+<tr class="even">
+<td align="left">21.1.f</td>
+</tr>
+<tr class="odd">
+<td align="left">21.2</td>
+</tr>
+<tr class="even">
+<td align="left">21.2.g</td>
+</tr>
+<tr class="odd">
+<td align="left">21.2.h</td>
+</tr>
+<tr class="even">
+<td align="left">21.2.j</td>
+</tr>
+<tr class="odd">
+<td align="left">21.3</td>
+</tr>
+<tr class="even">
+<td align="left">21.3.k</td>
+</tr>
+<tr class="odd">
+<td align="left">21.3.l</td>
+</tr>
+<tr class="even">
+<td align="left">21.3.m</td>
+</tr>
+<tr class="odd">
+<td align="left">21.3.n</td>
+</tr>
+<tr class="even">
+<td align="left">21.3.o</td>
+</tr>
+<tr class="odd">
+<td align="left">21.3.p</td>
+</tr>
+<tr class="even">
+<td align="left">21.3.p.n</td>
+</tr>
+<tr class="odd">
+<td align="left">21.3.p.s</td>
+</tr>
+<tr class="even">
+<td align="left">21.4</td>
+</tr>
+<tr class="odd">
+<td align="left">21.4.r</td>
+</tr>
+<tr class="even">
+<td align="left">21.4.s</td>
+</tr>
+<tr class="odd">
+<td align="left">21.4.t</td>
+</tr>
+<tr class="even">
+<td align="left">21.4.v</td>
+</tr>
+<tr class="odd">
+<td align="left">21.4.v.n</td>
+</tr>
+<tr class="even">
+<td align="left">21.4.v.s</td>
+</tr>
+<tr class="odd">
+<td align="left">21.4.w</td>
+</tr>
+<tr class="even">
+<td align="left">21.4.x</td>
+</tr>
+<tr class="odd">
+<td align="left">21.5</td>
+</tr>
+<tr class="even">
+<td align="left">21.5.y</td>
+</tr>
+<tr class="odd">
+<td align="left">21.5.z</td>
+</tr>
+<tr class="even">
+<td align="left">21.5.z.e</td>
+</tr>
+<tr class="odd">
+<td align="left">21.5.z.e.c</td>
+</tr>
+<tr class="even">
+<td align="left">21.5.z.e.u</td>
+</tr>
+<tr class="odd">
+<td align="left">21.5.z.w</td>
+</tr>
+<tr class="even">
+<td align="left">21.6</td>
+</tr>
+<tr class="odd">
+<td align="left">21.6.a</td>
+</tr>
+<tr class="even">
+<td align="left">21.6.b</td>
+</tr>
+<tr class="odd">
+<td align="left">21.6.c</td>
+</tr>
+<tr class="even">
+<td align="left">21.6.d</td>
+</tr>
+<tr class="odd">
+<td align="left">21.6.e</td>
+</tr>
+<tr class="even">
+<td align="left">21.6.f</td>
+</tr>
+<tr class="odd">
+<td align="left">21.6.g</td>
+</tr>
+<tr class="even">
+<td align="left">21.6.h</td>
+</tr>
+<tr class="odd">
+<td align="left">27</td>
+</tr>
+<tr class="even">
+<td align="left">27.1</td>
+</tr>
+<tr class="odd">
+<td align="left">27.1.a</td>
+</tr>
+<tr class="even">
+<td align="left">27.1.b</td>
+</tr>
+<tr class="odd">
+<td align="left">27.10</td>
+</tr>
+<tr class="even">
+<td align="left">27.10.a</td>
+</tr>
+<tr class="odd">
+<td align="left">27.10.a.1</td>
+</tr>
+<tr class="even">
+<td align="left">27.10.a.2</td>
+</tr>
+<tr class="odd">
+<td align="left">27.10.b</td>
+</tr>
+<tr class="even">
+<td align="left">27.12</td>
+</tr>
+<tr class="odd">
+<td align="left">27.12.a</td>
+</tr>
+<tr class="even">
+<td align="left">27.12.a.1</td>
+</tr>
+<tr class="odd">
+<td align="left">27.12.a.2</td>
+</tr>
+<tr class="even">
+<td align="left">27.12.a.3</td>
+</tr>
+<tr class="odd">
+<td align="left">27.12.a.4</td>
+</tr>
+<tr class="even">
+<td align="left">27.12.b</td>
+</tr>
+<tr class="odd">
+<td align="left">27.12.c</td>
+</tr>
+<tr class="even">
+<td align="left">27.14</td>
+</tr>
+<tr class="odd">
+<td align="left">27.14.a</td>
+</tr>
+<tr class="even">
+<td align="left">27.14.b</td>
+</tr>
+<tr class="odd">
+<td align="left">27.14.b.1</td>
+</tr>
+<tr class="even">
+<td align="left">27.14.b.2</td>
+</tr>
+<tr class="odd">
+<td align="left">27.2</td>
+</tr>
+<tr class="even">
+<td align="left">27.2.a</td>
+</tr>
+<tr class="odd">
+<td align="left">27.2.a.1</td>
+</tr>
+<tr class="even">
+<td align="left">27.2.a.2</td>
+</tr>
+<tr class="odd">
+<td align="left">27.2.b</td>
+</tr>
+<tr class="even">
+<td align="left">27.2.b.1</td>
+</tr>
+<tr class="odd">
+<td align="left">27.2.b.2</td>
+</tr>
+<tr class="even">
+<td align="left">27.3</td>
+</tr>
+<tr class="odd">
+<td align="left">27.3.a</td>
+</tr>
+<tr class="even">
+<td align="left">27.3.a.20</td>
+</tr>
+<tr class="odd">
+<td align="left">27.3.a.21</td>
+</tr>
+<tr class="even">
+<td align="left">27.3.b.23</td>
+</tr>
+<tr class="odd">
+<td align="left">27.3.bc</td>
+</tr>
+<tr class="even">
+<td align="left">27.3.c.22</td>
+</tr>
+<tr class="odd">
+<td align="left">27.3.d</td>
+</tr>
+<tr class="even">
+<td align="left">27.3.d.24</td>
+</tr>
+<tr class="odd">
+<td align="left">27.3.d.25</td>
+</tr>
+<tr class="even">
+<td align="left">27.3.d.26</td>
+</tr>
+<tr class="odd">
+<td align="left">27.3.d.27</td>
+</tr>
+<tr class="even">
+<td align="left">27.3.d.28</td>
+</tr>
+<tr class="odd">
+<td align="left">27.3.d.28.1</td>
+</tr>
+<tr class="even">
+<td align="left">27.3.d.28.2</td>
+</tr>
+<tr class="odd">
+<td align="left">27.3.d.29</td>
+</tr>
+<tr class="even">
+<td align="left">27.3.d.30</td>
+</tr>
+<tr class="odd">
+<td align="left">27.3.d.31</td>
+</tr>
+<tr class="even">
+<td align="left">27.3.d.32</td>
+</tr>
+<tr class="odd">
+<td align="left">27.4</td>
+</tr>
+<tr class="even">
+<td align="left">27.4.a</td>
+</tr>
+<tr class="odd">
+<td align="left">27.4.b</td>
+</tr>
+<tr class="even">
+<td align="left">27.4.c</td>
+</tr>
+<tr class="odd">
+<td align="left">27.5</td>
+</tr>
+<tr class="even">
+<td align="left">27.5.a</td>
+</tr>
+<tr class="odd">
+<td align="left">27.5.a.1</td>
+</tr>
+<tr class="even">
+<td align="left">27.5.a.2</td>
+</tr>
+<tr class="odd">
+<td align="left">27.5.b</td>
+</tr>
+<tr class="even">
+<td align="left">27.5.b.1</td>
+</tr>
+<tr class="odd">
+<td align="left">27.5.b.1.a</td>
+</tr>
+<tr class="even">
+<td align="left">27.5.b.1.b</td>
+</tr>
+<tr class="odd">
+<td align="left">27.5.b.2</td>
+</tr>
+<tr class="even">
+<td align="left">27.6</td>
+</tr>
+<tr class="odd">
+<td align="left">27.6.a</td>
+</tr>
+<tr class="even">
+<td align="left">27.6.b</td>
+</tr>
+<tr class="odd">
+<td align="left">27.6.b.1</td>
+</tr>
+<tr class="even">
+<td align="left">27.6.b.2</td>
+</tr>
+<tr class="odd">
+<td align="left">27.7</td>
+</tr>
+<tr class="even">
+<td align="left">27.7.a</td>
+</tr>
+<tr class="odd">
+<td align="left">27.7.b</td>
+</tr>
+<tr class="even">
+<td align="left">27.7.c</td>
+</tr>
+<tr class="odd">
+<td align="left">27.7.c.1</td>
+</tr>
+<tr class="even">
+<td align="left">27.7.c.2</td>
+</tr>
+<tr class="odd">
+<td align="left">27.7.d</td>
+</tr>
+<tr class="even">
+<td align="left">27.7.e</td>
+</tr>
+<tr class="odd">
+<td align="left">27.7.f</td>
+</tr>
+<tr class="even">
+<td align="left">27.7.g</td>
+</tr>
+<tr class="odd">
+<td align="left">27.7.h</td>
+</tr>
+<tr class="even">
+<td align="left">27.7.j</td>
+</tr>
+<tr class="odd">
+<td align="left">27.7.j.1</td>
+</tr>
+<tr class="even">
+<td align="left">27.7.j.2</td>
+</tr>
+<tr class="odd">
+<td align="left">27.7.k</td>
+</tr>
+<tr class="even">
+<td align="left">27.7.k.1</td>
+</tr>
+<tr class="odd">
+<td align="left">27.7.k.2</td>
+</tr>
+<tr class="even">
+<td align="left">27.8</td>
+</tr>
+<tr class="odd">
+<td align="left">27.8.a</td>
+</tr>
+<tr class="even">
+<td align="left">27.8.b</td>
+</tr>
+<tr class="odd">
+<td align="left">27.8.c</td>
+</tr>
+<tr class="even">
+<td align="left">27.8.d</td>
+</tr>
+<tr class="odd">
+<td align="left">27.8.d.1</td>
+</tr>
+<tr class="even">
+<td align="left">27.8.d.2</td>
+</tr>
+<tr class="odd">
+<td align="left">27.8.e</td>
+</tr>
+<tr class="even">
+<td align="left">27.8.e.1</td>
+</tr>
+<tr class="odd">
+<td align="left">27.8.e.2</td>
+</tr>
+<tr class="even">
+<td align="left">27.9</td>
+</tr>
+<tr class="odd">
+<td align="left">27.9.a</td>
+</tr>
+<tr class="even">
+<td align="left">27.9.b</td>
+</tr>
+<tr class="odd">
+<td align="left">27.9.b.1</td>
+</tr>
+<tr class="even">
+<td align="left">27.9.b.2</td>
+</tr>
+<tr class="odd">
+<td align="left">27_11</td>
+</tr>
+<tr class="even">
+<td align="left">27_13</td>
+</tr>
+<tr class="odd">
+<td align="left">31</td>
+</tr>
+<tr class="even">
+<td align="left">34</td>
+</tr>
+<tr class="odd">
+<td align="left">34.1</td>
+</tr>
+<tr class="even">
+<td align="left">34.1.1</td>
+</tr>
+<tr class="odd">
+<td align="left">34.1.11</td>
+</tr>
+<tr class="even">
+<td align="left">34.1.2</td>
+</tr>
+<tr class="odd">
+<td align="left">34.1.3</td>
+</tr>
+<tr class="even">
+<td align="left">34.1.31</td>
+</tr>
+<tr class="odd">
+<td align="left">34.1.32</td>
+</tr>
+<tr class="even">
+<td align="left">34.2</td>
+</tr>
+<tr class="odd">
+<td align="left">34.3</td>
+</tr>
+<tr class="even">
+<td align="left">34.3.1</td>
+</tr>
+<tr class="odd">
+<td align="left">34.3.11</td>
+</tr>
+<tr class="even">
+<td align="left">34.3.12</td>
+</tr>
+<tr class="odd">
+<td align="left">34.3.13</td>
+</tr>
+<tr class="even">
+<td align="left">34.3.2</td>
+</tr>
+<tr class="odd">
+<td align="left">34.3.3</td>
+</tr>
+<tr class="even">
+<td align="left">34.3.4</td>
+</tr>
+<tr class="odd">
+<td align="left">34.3.5</td>
+</tr>
+<tr class="even">
+<td align="left">34.3.6</td>
+</tr>
+<tr class="odd">
+<td align="left">34.4</td>
+</tr>
+<tr class="even">
+<td align="left">34.4.1</td>
+</tr>
+<tr class="odd">
+<td align="left">34.4.2</td>
+</tr>
+<tr class="even">
+<td align="left">37</td>
+</tr>
+<tr class="odd">
+<td align="left">37.1</td>
+</tr>
+<tr class="even">
+<td align="left">37.1.1</td>
+</tr>
+<tr class="odd">
+<td align="left">37.1.2</td>
+</tr>
+<tr class="even">
+<td align="left">37.1.3</td>
+</tr>
+<tr class="odd">
+<td align="left">37.2</td>
+</tr>
+<tr class="even">
+<td align="left">37.2.1</td>
+</tr>
+<tr class="odd">
+<td align="left">37.2.2</td>
+</tr>
+<tr class="even">
+<td align="left">37.3</td>
+</tr>
+<tr class="odd">
+<td align="left">37.3.1</td>
+</tr>
+<tr class="even">
+<td align="left">37.3.2</td>
+</tr>
+<tr class="odd">
+<td align="left">37.4</td>
+</tr>
+<tr class="even">
+<td align="left">37.4.1</td>
+</tr>
+<tr class="odd">
+<td align="left">37.4.2</td>
+</tr>
+<tr class="even">
+<td align="left">37.4.3</td>
+</tr>
+<tr class="odd">
+<td align="left">41</td>
+</tr>
+<tr class="even">
+<td align="left">41.1</td>
+</tr>
+<tr class="odd">
+<td align="left">41.1.1</td>
+</tr>
+<tr class="even">
+<td align="left">41.1.2</td>
+</tr>
+<tr class="odd">
+<td align="left">41.1.3</td>
+</tr>
+<tr class="even">
+<td align="left">41.1.4</td>
+</tr>
+<tr class="odd">
+<td align="left">41.2</td>
+</tr>
+<tr class="even">
+<td align="left">41.2.1</td>
+</tr>
+<tr class="odd">
+<td align="left">41.2.2</td>
+</tr>
+<tr class="even">
+<td align="left">41.2.3</td>
+</tr>
+<tr class="odd">
+<td align="left">41.2.4</td>
+</tr>
+<tr class="even">
+<td align="left">41.3</td>
+</tr>
+<tr class="odd">
+<td align="left">41.3.1</td>
+</tr>
+<tr class="even">
+<td align="left">41.3.2</td>
+</tr>
+<tr class="odd">
+<td align="left">41.3.3</td>
+</tr>
+<tr class="even">
+<td align="left">47</td>
+</tr>
+<tr class="odd">
+<td align="left">47.1</td>
+</tr>
+<tr class="even">
+<td align="left">47.1.1</td>
+</tr>
+<tr class="odd">
+<td align="left">47.1.2</td>
+</tr>
+<tr class="even">
+<td align="left">47.1.3</td>
+</tr>
+<tr class="odd">
+<td align="left">47.1.4</td>
+</tr>
+<tr class="even">
+<td align="left">47.1.5</td>
+</tr>
+<tr class="odd">
+<td align="left">47.1.6</td>
+</tr>
+<tr class="even">
+<td align="left">47.2</td>
+</tr>
+<tr class="odd">
+<td align="left">47.2.1</td>
+</tr>
+<tr class="even">
+<td align="left">47.2.2</td>
+</tr>
+<tr class="odd">
+<td align="left">47.A</td>
+</tr>
+<tr class="even">
+<td align="left">47.A.0</td>
+</tr>
+<tr class="odd">
+<td align="left">47.A.1</td>
+</tr>
+<tr class="even">
+<td align="left">47.B</td>
+</tr>
+<tr class="odd">
+<td align="left">47.B.0</td>
+</tr>
+<tr class="even">
+<td align="left">47.B.1</td>
+</tr>
+<tr class="odd">
+<td align="left">47.C</td>
+</tr>
+<tr class="even">
+<td align="left">47.C.0</td>
+</tr>
+<tr class="odd">
+<td align="left">47.C.1</td>
+</tr>
+<tr class="even">
+<td align="left">47.D</td>
+</tr>
+<tr class="odd">
+<td align="left">47.D.0</td>
+</tr>
+<tr class="even">
+<td align="left">47.D.1</td>
+</tr>
+<tr class="odd">
+<td align="left">48</td>
+</tr>
+<tr class="even">
+<td align="left">48.1</td>
+</tr>
+<tr class="odd">
+<td align="left">48.2</td>
+</tr>
+<tr class="even">
+<td align="left">48.3</td>
+</tr>
+<tr class="odd">
+<td align="left">48.4</td>
+</tr>
+<tr class="even">
+<td align="left">48.5</td>
+</tr>
+<tr class="odd">
+<td align="left">48.6</td>
+</tr>
+<tr class="even">
+<td align="left">51</td>
+</tr>
+<tr class="odd">
+<td align="left">51.1</td>
+</tr>
+<tr class="even">
+<td align="left">51.2</td>
+</tr>
+<tr class="odd">
+<td align="left">51.3</td>
+</tr>
+<tr class="even">
+<td align="left">51.4</td>
+</tr>
+<tr class="odd">
+<td align="left">51.5</td>
+</tr>
+<tr class="even">
+<td align="left">51.6</td>
+</tr>
+<tr class="odd">
+<td align="left">51.7</td>
+</tr>
+<tr class="even">
+<td align="left">51.8</td>
+</tr>
+<tr class="odd">
+<td align="left">57</td>
+</tr>
+<tr class="even">
+<td align="left">57.1</td>
+</tr>
+<tr class="odd">
+<td align="left">57.2</td>
+</tr>
+<tr class="even">
+<td align="left">57.3</td>
+</tr>
+<tr class="odd">
+<td align="left">57.4</td>
+</tr>
+<tr class="even">
+<td align="left">57.5</td>
+</tr>
+<tr class="odd">
+<td align="left">57.5.1</td>
+</tr>
+<tr class="even">
+<td align="left">57.5.2</td>
+</tr>
+<tr class="odd">
+<td align="left">57.6</td>
+</tr>
+<tr class="even">
+<td align="left">58</td>
+</tr>
+<tr class="odd">
+<td align="left">58.4</td>
+</tr>
+<tr class="even">
+<td align="left">58.4.1</td>
+</tr>
+<tr class="odd">
+<td align="left">58.4.2</td>
+</tr>
+<tr class="even">
+<td align="left">58.4.3</td>
+</tr>
+<tr class="odd">
+<td align="left">58.4.3.a</td>
+</tr>
+<tr class="even">
+<td align="left">58.4.3.b</td>
+</tr>
+<tr class="odd">
+<td align="left">58.4.4</td>
+</tr>
+<tr class="even">
+<td align="left">58.4.4.a</td>
+</tr>
+<tr class="odd">
+<td align="left">58.4.4.b</td>
+</tr>
+<tr class="even">
+<td align="left">58.5</td>
+</tr>
+<tr class="odd">
+<td align="left">58.5.1</td>
+</tr>
+<tr class="even">
+<td align="left">58.5.2</td>
+</tr>
+<tr class="odd">
+<td align="left">58.6</td>
+</tr>
+<tr class="even">
+<td align="left">58.7</td>
+</tr>
+<tr class="odd">
+<td align="left">71</td>
+</tr>
+<tr class="even">
+<td align="left">77</td>
+</tr>
+<tr class="odd">
+<td align="left">81</td>
+</tr>
+<tr class="even">
+<td align="left">87</td>
+</tr>
+<tr class="odd">
+<td align="left">87.1</td>
+</tr>
+<tr class="even">
+<td align="left">87.1.1</td>
+</tr>
+<tr class="odd">
+<td align="left">87.1.2</td>
+</tr>
+<tr class="even">
+<td align="left">87.1.3</td>
+</tr>
+<tr class="odd">
+<td align="left">87.1.4</td>
+</tr>
+<tr class="even">
+<td align="left">87.2</td>
+</tr>
+<tr class="odd">
+<td align="left">87.2.1</td>
+</tr>
+<tr class="even">
+<td align="left">87.2.2</td>
+</tr>
+<tr class="odd">
+<td align="left">87.2.3</td>
+</tr>
+<tr class="even">
+<td align="left">87.2.4</td>
+</tr>
+<tr class="odd">
+<td align="left">87.2.5</td>
+</tr>
+<tr class="even">
+<td align="left">87.2.6</td>
+</tr>
+<tr class="odd">
+<td align="left">87.3</td>
+</tr>
+<tr class="even">
+<td align="left">87.3.1</td>
+</tr>
+<tr class="odd">
+<td align="left">87.3.2</td>
+</tr>
+<tr class="even">
+<td align="left">87.3.3</td>
+</tr>
+<tr class="odd">
+<td align="left">88</td>
+</tr>
+<tr class="even">
+<td align="left">88.1</td>
+</tr>
+<tr class="odd">
+<td align="left">88.2</td>
+</tr>
+<tr class="even">
+<td align="left">88.3</td>
+</tr>
+</tbody>
+</table>
+<div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(area_rdbes_not_in_linkage, <span class="at">caption =</span> <span class="st">&quot;area_rdbes not in linkage file&quot;</span>)</span></code></pre></div>
+<table>
+<caption>area_rdbes not in linkage file</caption>
+<colgroup>
+<col width="19%" />
+<col width="3%" />
+<col width="57%" />
+<col width="8%" />
+<col width="5%" />
+<col width="5%" />
+</colgroup>
+<thead>
+<tr class="header">
+<th align="left">GUID</th>
+<th align="left">Key</th>
+<th align="left">Description</th>
+<th align="left">LongDescription</th>
+<th align="left">Modified</th>
+<th align="left">Deprecated</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">beccd972-07ee-4042-903f-6e1a2592f344</td>
+<td align="left">01</td>
+<td align="left">Africa - Inland waters</td>
+<td align="left">NA</td>
+<td align="left">2021-12-22</td>
+<td align="left">FALSE</td>
+</tr>
+<tr class="even">
+<td align="left">6043f6f4-962b-46b4-8bb2-80b90ca1b5e6</td>
+<td align="left">02</td>
+<td align="left">America, North - Inland waters</td>
+<td align="left">NA</td>
+<td align="left">2021-12-22</td>
+<td align="left">FALSE</td>
+</tr>
+<tr class="odd">
+<td align="left">64b83c09-f3a4-4528-b06f-e7b4aaf60055</td>
+<td align="left">03</td>
+<td align="left">America, South - Inland waters</td>
+<td align="left">NA</td>
+<td align="left">2021-12-22</td>
+<td align="left">FALSE</td>
+</tr>
+<tr class="even">
+<td align="left">22482f66-a78a-4c64-99d1-1cb617f7cf61</td>
+<td align="left">04</td>
+<td align="left">Asia - Inland waters</td>
+<td align="left">NA</td>
+<td align="left">2021-12-22</td>
+<td align="left">FALSE</td>
+</tr>
+<tr class="odd">
+<td align="left">58dcd3d1-d3bd-4979-8dac-05f2471358b0</td>
+<td align="left">05</td>
+<td align="left">Europe - Inland waters</td>
+<td align="left">NA</td>
+<td align="left">2021-12-22</td>
+<td align="left">FALSE</td>
+</tr>
+<tr class="even">
+<td align="left">0d4a353e-2c37-4ac2-b960-45ec4155a4b9</td>
+<td align="left">06</td>
+<td align="left">Oceania - Inland waters</td>
+<td align="left">NA</td>
+<td align="left">2021-12-22</td>
+<td align="left">FALSE</td>
+</tr>
+<tr class="odd">
+<td align="left">9b665665-9830-4ec2-be99-3b811db41a67</td>
+<td align="left">07</td>
+<td align="left">Former USSR area - Inland waters</td>
+<td align="left">NA</td>
+<td align="left">2021-12-22</td>
+<td align="left">FALSE</td>
+</tr>
+<tr class="even">
+<td align="left">7069ee89-f0ed-4597-be83-59f68c67eb70</td>
+<td align="left">08</td>
+<td align="left">Antarctica - Inland waters</td>
+<td align="left">NA</td>
+<td align="left">2021-12-22</td>
+<td align="left">FALSE</td>
+</tr>
+<tr class="odd">
+<td align="left">78286236-4e7e-4ff0-bba0-f00b38d0cdf8</td>
+<td align="left">18</td>
+<td align="left">Arctic Sea</td>
+<td align="left">NA</td>
+<td align="left">2024-05-02</td>
+<td align="left">FALSE</td>
+</tr>
+<tr class="even">
+<td align="left">3ec18bfd-769a-4094-858b-406573aedd19</td>
+<td align="left">27.11</td>
+<td align="left">[Defunct - do not use] Old code XI. Incorporated in the
+Eastern Central Atlantic (FAO Major Fishing Area 34)</td>
+<td align="left">NA</td>
+<td align="left">2021-12-22</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="odd">
+<td align="left">a941c759-69f5-4da5-a6d1-123eb8e32fa8</td>
+<td align="left">27.13</td>
+<td align="left">[Defunct] Old code XIII. It has been incorporated in
+the Eastern Central Atlantic (FAO Major Fishing Area 34)</td>
+<td align="left">NA</td>
+<td align="left">2021-12-22</td>
+<td align="left">TRUE</td>
+</tr>
+<tr class="even">
+<td align="left">54710262-6071-4af3-b5cc-b4d5de9e8585</td>
+<td align="left">61</td>
+<td align="left">Pacific, Northwest</td>
+<td align="left">NA</td>
+<td align="left">2024-05-03</td>
+<td align="left">FALSE</td>
+</tr>
+<tr class="odd">
+<td align="left">68ae8afa-769c-41f2-9a31-43927aa9d92c</td>
+<td align="left">67</td>
+<td align="left">Pacific, Northeast</td>
+<td align="left">NA</td>
+<td align="left">2024-05-03</td>
+<td align="left">FALSE</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="linkage-additions-part-2" class="section level1">
+<h1>Linkage additions part 2</h1>
+<p>(This needs to come after the work with area, so e.g. too high area
+levels are not corrected by the area loops above)</p>
+<p>Highlights known issues with input data. These should only be
+included in the control / check file, not table 2.1</p>
+<p>I can’t figure out how this will work with EUROSTAT data, so will
+start with creating a new check file for RDBES data</p>
+<div class="sourceCode" id="cb14"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" tabindex="-1"></a>her_28 <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb14-2"><a href="#cb14-2" tabindex="-1"></a>  <span class="at">region =</span> <span class="st">&quot;Baltic Sea&quot;</span>,</span>
+<span id="cb14-3"><a href="#cb14-3" tabindex="-1"></a>  <span class="at">spp_name =</span> <span class="st">&quot;Herring&quot;</span>,</span>
+<span id="cb14-4"><a href="#cb14-4" tabindex="-1"></a>  <span class="at">latin_name =</span> <span class="st">&quot;Clupea harengus&quot;</span>,</span>
+<span id="cb14-5"><a href="#cb14-5" tabindex="-1"></a>  <span class="at">rfmo =</span> <span class="st">&quot;ICES&quot;</span>,</span>
+<span id="cb14-6"><a href="#cb14-6" tabindex="-1"></a>  <span class="at">rfmo_stock_id =</span> <span class="cn">NA</span>,</span>
+<span id="cb14-7"><a href="#cb14-7" tabindex="-1"></a>  <span class="at">x3a_code =</span> <span class="st">&quot;HER&quot;</span>,</span>
+<span id="cb14-8"><a href="#cb14-8" tabindex="-1"></a>  <span class="at">worms_aphia_id =</span> <span class="dv">126417</span>,</span>
+<span id="cb14-9"><a href="#cb14-9" tabindex="-1"></a>  <span class="at">fides_area =</span> <span class="cn">NA</span>,</span>
+<span id="cb14-10"><a href="#cb14-10" tabindex="-1"></a>  <span class="at">area =</span> <span class="cn">NA</span>,</span>
+<span id="cb14-11"><a href="#cb14-11" tabindex="-1"></a>  <span class="at">area_bis =</span> <span class="cn">NA</span>,</span>
+<span id="cb14-12"><a href="#cb14-12" tabindex="-1"></a>  <span class="at">tac_area_description =</span> <span class="cn">NA</span>,</span>
+<span id="cb14-13"><a href="#cb14-13" tabindex="-1"></a>  <span class="at">comments =</span> <span class="st">&quot;Known issue: wrong area level&quot;</span>,</span>
+<span id="cb14-14"><a href="#cb14-14" tabindex="-1"></a>  <span class="at">latin_name_join =</span> <span class="st">&quot;Clupea harengus&quot;</span>,</span>
+<span id="cb14-15"><a href="#cb14-15" tabindex="-1"></a>  <span class="at">area_rdb =</span> <span class="st">&quot;27.3.d.28&quot;</span>,</span>
+<span id="cb14-16"><a href="#cb14-16" tabindex="-1"></a>  <span class="at">area_rdbes =</span> <span class="st">&quot;27.3.d.28&quot;</span>,</span>
+<span id="cb14-17"><a href="#cb14-17" tabindex="-1"></a>  <span class="at">include_in_table_2.1 =</span> <span class="st">&quot;no&quot;</span>,</span>
+<span id="cb14-18"><a href="#cb14-18" tabindex="-1"></a>  <span class="at">comments_dev =</span> <span class="cn">NA</span></span>
+<span id="cb14-19"><a href="#cb14-19" tabindex="-1"></a>)</span>
+<span id="cb14-20"><a href="#cb14-20" tabindex="-1"></a></span>
+<span id="cb14-21"><a href="#cb14-21" tabindex="-1"></a>ple_3a <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb14-22"><a href="#cb14-22" tabindex="-1"></a>  <span class="at">region =</span> <span class="st">&quot;North Sea and Eastern Arctic&quot;</span>,</span>
+<span id="cb14-23"><a href="#cb14-23" tabindex="-1"></a>  <span class="at">spp_name =</span> <span class="st">&quot;Plaice&quot;</span>,</span>
+<span id="cb14-24"><a href="#cb14-24" tabindex="-1"></a>  <span class="at">latin_name =</span> <span class="st">&quot;Pleuronectes platessa&quot;</span>,</span>
+<span id="cb14-25"><a href="#cb14-25" tabindex="-1"></a>  <span class="at">rfmo =</span> <span class="st">&quot;ICES&quot;</span>,</span>
+<span id="cb14-26"><a href="#cb14-26" tabindex="-1"></a>  <span class="at">rfmo_stock_id =</span> <span class="cn">NA</span>,</span>
+<span id="cb14-27"><a href="#cb14-27" tabindex="-1"></a>  <span class="at">x3a_code =</span> <span class="st">&quot;PLE&quot;</span>,</span>
+<span id="cb14-28"><a href="#cb14-28" tabindex="-1"></a>  <span class="at">worms_aphia_id =</span> <span class="dv">127143</span>,</span>
+<span id="cb14-29"><a href="#cb14-29" tabindex="-1"></a>  <span class="at">fides_area =</span> <span class="cn">NA</span>,</span>
+<span id="cb14-30"><a href="#cb14-30" tabindex="-1"></a>  <span class="at">area =</span> <span class="cn">NA</span>,</span>
+<span id="cb14-31"><a href="#cb14-31" tabindex="-1"></a>  <span class="at">area_bis =</span> <span class="cn">NA</span>,</span>
+<span id="cb14-32"><a href="#cb14-32" tabindex="-1"></a>  <span class="at">tac_area_description =</span> <span class="cn">NA</span>,</span>
+<span id="cb14-33"><a href="#cb14-33" tabindex="-1"></a>  <span class="at">comments =</span> <span class="st">&quot;Known issue: wrong area level&quot;</span>,</span>
+<span id="cb14-34"><a href="#cb14-34" tabindex="-1"></a>  <span class="at">latin_name_join =</span> <span class="st">&quot;Pleuronectes platessa&quot;</span>,</span>
+<span id="cb14-35"><a href="#cb14-35" tabindex="-1"></a>  <span class="at">area_rdb =</span> <span class="st">&quot;27.3.a&quot;</span>,</span>
+<span id="cb14-36"><a href="#cb14-36" tabindex="-1"></a>  <span class="at">area_rdbes =</span> <span class="st">&quot;27.3.a&quot;</span>,</span>
+<span id="cb14-37"><a href="#cb14-37" tabindex="-1"></a>  <span class="at">include_in_table_2.1 =</span> <span class="st">&quot;no&quot;</span>,</span>
+<span id="cb14-38"><a href="#cb14-38" tabindex="-1"></a>  <span class="at">comments_dev =</span> <span class="cn">NA</span></span>
+<span id="cb14-39"><a href="#cb14-39" tabindex="-1"></a>)</span>
+<span id="cb14-40"><a href="#cb14-40" tabindex="-1"></a></span>
+<span id="cb14-41"><a href="#cb14-41" tabindex="-1"></a></span>
+<span id="cb14-42"><a href="#cb14-42" tabindex="-1"></a>cod_3a <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb14-43"><a href="#cb14-43" tabindex="-1"></a>  <span class="at">region =</span> <span class="st">&quot;North Sea and Eastern Arctic&quot;</span>,</span>
+<span id="cb14-44"><a href="#cb14-44" tabindex="-1"></a>  <span class="at">spp_name =</span> <span class="st">&quot;Cod&quot;</span>,</span>
+<span id="cb14-45"><a href="#cb14-45" tabindex="-1"></a>  <span class="at">latin_name =</span> <span class="st">&quot;Gadus morhua&quot;</span>,</span>
+<span id="cb14-46"><a href="#cb14-46" tabindex="-1"></a>  <span class="at">rfmo =</span> <span class="st">&quot;ICES&quot;</span>,</span>
+<span id="cb14-47"><a href="#cb14-47" tabindex="-1"></a>  <span class="at">rfmo_stock_id =</span> <span class="cn">NA</span>,</span>
+<span id="cb14-48"><a href="#cb14-48" tabindex="-1"></a>  <span class="at">x3a_code =</span> <span class="st">&quot;COD&quot;</span>,</span>
+<span id="cb14-49"><a href="#cb14-49" tabindex="-1"></a>  <span class="at">worms_aphia_id =</span> <span class="dv">126436</span>,</span>
+<span id="cb14-50"><a href="#cb14-50" tabindex="-1"></a>  <span class="at">fides_area =</span> <span class="cn">NA</span>,</span>
+<span id="cb14-51"><a href="#cb14-51" tabindex="-1"></a>  <span class="at">area =</span> <span class="cn">NA</span>,</span>
+<span id="cb14-52"><a href="#cb14-52" tabindex="-1"></a>  <span class="at">area_bis =</span> <span class="cn">NA</span>,</span>
+<span id="cb14-53"><a href="#cb14-53" tabindex="-1"></a>  <span class="at">tac_area_description =</span> <span class="cn">NA</span>,</span>
+<span id="cb14-54"><a href="#cb14-54" tabindex="-1"></a>  <span class="at">comments =</span> <span class="st">&quot;Known issue: wrong area level&quot;</span>,</span>
+<span id="cb14-55"><a href="#cb14-55" tabindex="-1"></a>  <span class="at">latin_name_join =</span> <span class="st">&quot;Gadus morhua&quot;</span>,</span>
+<span id="cb14-56"><a href="#cb14-56" tabindex="-1"></a>  <span class="at">area_rdb =</span> <span class="st">&quot;27.3.a&quot;</span>,</span>
+<span id="cb14-57"><a href="#cb14-57" tabindex="-1"></a>  <span class="at">area_rdbes =</span> <span class="st">&quot;27.3.a&quot;</span>,</span>
+<span id="cb14-58"><a href="#cb14-58" tabindex="-1"></a>  <span class="at">include_in_table_2.1 =</span> <span class="st">&quot;no&quot;</span>,</span>
+<span id="cb14-59"><a href="#cb14-59" tabindex="-1"></a>  <span class="at">comments_dev =</span> <span class="cn">NA</span></span>
+<span id="cb14-60"><a href="#cb14-60" tabindex="-1"></a>)</span>
+<span id="cb14-61"><a href="#cb14-61" tabindex="-1"></a></span>
+<span id="cb14-62"><a href="#cb14-62" tabindex="-1"></a></span>
+<span id="cb14-63"><a href="#cb14-63" tabindex="-1"></a>linkage <span class="ot">&lt;-</span> <span class="fu">rbind</span>(linkage, her_28, ple_3a, cod_3a)</span></code></pre></div>
+</div>
+<div id="species" class="section level1">
+<h1>Species</h1>
+<div id="latin_name_join" class="section level2">
+<h2>latin_name_join</h2>
+<div id="remove-blanks" class="section level3">
+<h3>Remove blanks</h3>
+</div>
+<div id="fixed-outdated-scientific-names-and-aphiaids" class="section level3">
+<h3>Fixed outdated scientific names and aphiaid’s</h3>
+<p><strong>TODO</strong> - find a clever way to do this</p>
+</div>
+<div id="group-of-species" class="section level3">
+<h3>Group of species</h3>
+</div>
+</div>
+</div>
+<div id="quotas" class="section level1">
+<h1>Quotas</h1>
+<div id="add-missing-quotas" class="section level2">
+<h2>Add missing quotas</h2>
+<div class="sourceCode" id="cb15"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" tabindex="-1"></a><span class="co"># Add missing ----</span></span>
+<span id="cb15-2"><a href="#cb15-2" tabindex="-1"></a></span>
+<span id="cb15-3"><a href="#cb15-3" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area[linkage<span class="sc">$</span>x3a_code <span class="sc">==</span> <span class="st">&quot;MAC&quot;</span> <span class="sc">&amp;</span> linkage<span class="sc">$</span>fides_area <span class="sc">==</span> <span class="st">&quot;2A34.&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;2A34.,2A34-N&quot;</span></span>
+<span id="cb15-4"><a href="#cb15-4" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area[linkage<span class="sc">$</span>x3a_code <span class="sc">==</span> <span class="st">&quot;NOP&quot;</span> <span class="sc">&amp;</span> linkage<span class="sc">$</span>fides_area <span class="sc">==</span> <span class="st">&quot;2A3A4_Q1&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;2A3A4_Q1,2A3A4.&quot;</span></span>
+<span id="cb15-5"><a href="#cb15-5" tabindex="-1"></a>linkage<span class="sc">$</span>x3a_code[linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Lophius spp.&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;ANF,MON,ANK,ANG,MVA,MVO,MVJ,MVN,MNZ&quot;</span></span>
+<span id="cb15-6"><a href="#cb15-6" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area[linkage<span class="sc">$</span>x3a_code <span class="sc">==</span> <span class="st">&quot;PRA&quot;</span> <span class="sc">&amp;</span> linkage<span class="sc">$</span>fides_area <span class="sc">==</span> <span class="st">&quot;2AC4-C&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;2AC4-C,03A.2&quot;</span></span>
+<span id="cb15-7"><a href="#cb15-7" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area[linkage<span class="sc">$</span>x3a_code <span class="sc">==</span> <span class="st">&quot;HKE&quot;</span> <span class="sc">&amp;</span> linkage<span class="sc">$</span>fides_area <span class="sc">==</span> <span class="st">&quot;03A.,2AC4.&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;03A.,2AC4.,2AC4-C&quot;</span></span>
+<span id="cb15-8"><a href="#cb15-8" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area[linkage<span class="sc">$</span>x3a_code <span class="sc">==</span> <span class="st">&quot;RNG&quot;</span> <span class="sc">&amp;</span> linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;5b, 6, 7&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;5B67-&quot;</span></span>
+<span id="cb15-9"><a href="#cb15-9" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area[linkage<span class="sc">$</span>x3a_code <span class="sc">==</span> <span class="st">&quot;RNG&quot;</span> <span class="sc">&amp;</span> linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;8, 9, 10, 12, 14&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;8X14-&quot;</span></span>
+<span id="cb15-10"><a href="#cb15-10" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area[linkage<span class="sc">$</span>x3a_code <span class="sc">==</span> <span class="st">&quot;DGS&quot;</span> <span class="sc">&amp;</span> linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;3a, 4, 7d&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;2AC4-C,03A-C.&quot;</span></span>
+<span id="cb15-11"><a href="#cb15-11" tabindex="-1"></a>linkage<span class="sc">$</span>comments[linkage<span class="sc">$</span>x3a_code <span class="sc">==</span> <span class="st">&quot;DGS&quot;</span> <span class="sc">&amp;</span> linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;1, 2&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;FIDES match but difference with area (area &lt; TAC)&quot;</span></span>
+<span id="cb15-12"><a href="#cb15-12" tabindex="-1"></a>linkage<span class="sc">$</span>comments[linkage<span class="sc">$</span>x3a_code <span class="sc">==</span> <span class="st">&quot;DGS&quot;</span> <span class="sc">&amp;</span> linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;5, 6, 7 (excl. 7d), 8, 9, 10, 12, 14&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;FIDES match but difference with area (area &lt; TAC)&quot;</span></span>
+<span id="cb15-13"><a href="#cb15-13" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area[linkage<span class="sc">$</span>x3a_code <span class="sc">==</span> <span class="st">&quot;SOL&quot;</span> <span class="sc">&amp;</span> linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;8cde, 9, 10&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;8CDE34&quot;</span></span>
+<span id="cb15-14"><a href="#cb15-14" tabindex="-1"></a>linkage<span class="sc">$</span>comments[linkage<span class="sc">$</span>x3a_code <span class="sc">==</span> <span class="st">&quot;SOL&quot;</span> <span class="sc">&amp;</span> linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;8cde, 9, 10&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;FIDES match&quot;</span></span>
+<span id="cb15-15"><a href="#cb15-15" tabindex="-1"></a></span>
+<span id="cb15-16"><a href="#cb15-16" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area[linkage<span class="sc">$</span>x3a_code <span class="sc">==</span> <span class="st">&quot;RHG&quot;</span> <span class="sc">&amp;</span> linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;8, 9, 10, 12, 14&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;8X14-,514GRN&quot;</span></span>
+<span id="cb15-17"><a href="#cb15-17" tabindex="-1"></a></span>
+<span id="cb15-18"><a href="#cb15-18" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area[linkage<span class="sc">$</span>x3a_code <span class="sc">==</span> <span class="st">&quot;SPR&quot;</span> <span class="sc">&amp;</span> linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;7d&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;7DE.,7DE.2&quot;</span></span>
+<span id="cb15-19"><a href="#cb15-19" tabindex="-1"></a></span>
+<span id="cb15-20"><a href="#cb15-20" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area[linkage<span class="sc">$</span>x3a_code <span class="sc">==</span> <span class="st">&quot;SOL&quot;</span> <span class="sc">&amp;</span> linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;20-24&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;3ABC24&quot;</span></span>
+<span id="cb15-21"><a href="#cb15-21" tabindex="-1"></a>linkage<span class="sc">$</span>comments[linkage<span class="sc">$</span>x3a_code <span class="sc">==</span> <span class="st">&quot;SOL&quot;</span> <span class="sc">&amp;</span> linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;20-24&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;FIDES match&quot;</span></span>
+<span id="cb15-22"><a href="#cb15-22" tabindex="-1"></a></span>
+<span id="cb15-23"><a href="#cb15-23" tabindex="-1"></a><span class="co"># linkage$fides_area[linkage$x3a_code == &quot;SOL&quot; &amp; linkage$area == &quot;Union waters of 2a, 3a and 4&quot;] &lt;- &quot;3ABC24&quot;  # HUSK</span></span>
+<span id="cb15-24"><a href="#cb15-24" tabindex="-1"></a></span>
+<span id="cb15-25"><a href="#cb15-25" tabindex="-1"></a></span>
+<span id="cb15-26"><a href="#cb15-26" tabindex="-1"></a></span>
+<span id="cb15-27"><a href="#cb15-27" tabindex="-1"></a><span class="co"># Add species where quota on more than one</span></span>
+<span id="cb15-28"><a href="#cb15-28" tabindex="-1"></a>linkage<span class="sc">$</span>x3a_code[linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Scophthalmus maximus&quot;</span> <span class="sc">&amp;</span> linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;3a, 4, 7d&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;TUR,T/B&quot;</span></span>
+<span id="cb15-29"><a href="#cb15-29" tabindex="-1"></a>linkage<span class="sc">$</span>x3a_code[linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Scophthalmus rhombus&quot;</span> <span class="sc">&amp;</span> linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;3a, 4, 7d&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;BLL,T/B&quot;</span></span>
+<span id="cb15-30"><a href="#cb15-30" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area[linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Scophthalmus maximus&quot;</span> <span class="sc">&amp;</span> linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;3a, 4, 7d&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;2AC4-C&quot;</span></span>
+<span id="cb15-31"><a href="#cb15-31" tabindex="-1"></a>linkage<span class="sc">$</span>comments[linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Scophthalmus maximus&quot;</span> <span class="sc">&amp;</span> linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;3a, 4, 7d&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;FIDES match but difference with area (area &gt; TAC)&quot;</span></span>
+<span id="cb15-32"><a href="#cb15-32" tabindex="-1"></a>linkage<span class="sc">$</span>comments[linkage<span class="sc">$</span>latin_name <span class="sc">==</span> <span class="st">&quot;Scophthalmus rhombus&quot;</span> <span class="sc">&amp;</span> linkage<span class="sc">$</span>area <span class="sc">==</span> <span class="st">&quot;3a, 4, 7d&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;FIDES match but difference with area (area &gt; TAC)&quot;</span></span></code></pre></div>
+</div>
+<div id="x3a_code" class="section level2">
+<h2>x3a_code</h2>
+<div id="remove-blanks-1" class="section level3">
+<h3>Remove blanks</h3>
+</div>
+</div>
+<div id="quotas-area-in-linkage-not-in-fides" class="section level2">
+<h2>Quotas area in linkage not in fides</h2>
+<div id="remove-blanks-2" class="section level3">
+<h3>Remove blanks</h3>
+</div>
+<div id="correct-misspellings" class="section level3">
+<h3>Correct misspellings</h3>
+<p>Don’t know how to solve this one Greater Forkbeard Phycis blennoides
+ICES NA GFB 126501 567-,89-,1012-</p>
+<div class="sourceCode" id="cb16"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area <span class="ot">&lt;-</span> <span class="fu">gsub</span>(<span class="st">&quot;noTAC&quot;</span>, <span class="st">&quot;No TAC&quot;</span>, linkage<span class="sc">$</span>fides_area)</span>
+<span id="cb16-2"><a href="#cb16-2" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_replace</span>(linkage<span class="sc">$</span>fides_area, <span class="st">&quot;03A-C(?!.)&quot;</span>, <span class="st">&quot;03A-C.&quot;</span>)</span>
+<span id="cb16-3"><a href="#cb16-3" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_replace</span>(linkage<span class="sc">$</span>fides_area, <span class="st">&quot;07DE.&quot;</span>, <span class="st">&quot;7DE.&quot;</span>)</span>
+<span id="cb16-4"><a href="#cb16-4" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_replace</span>(linkage<span class="sc">$</span>fides_area, <span class="st">&quot;7G-K(?!.)&quot;</span>, <span class="st">&quot;7G-K.&quot;</span>)</span>
+<span id="cb16-5"><a href="#cb16-5" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_replace</span>(linkage<span class="sc">$</span>fides_area, <span class="st">&quot;sept-11&quot;</span>, <span class="st">&quot;9/3411&quot;</span>)</span>
+<span id="cb16-6"><a href="#cb16-6" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_replace</span>(linkage<span class="sc">$</span>fides_area, <span class="st">&quot;8ABDE(?!.)&quot;</span>, <span class="st">&quot;8ABDE.&quot;</span>)</span>
+<span id="cb16-7"><a href="#cb16-7" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_replace</span>(linkage<span class="sc">$</span>fides_area, <span class="st">&quot;juil-11&quot;</span>, <span class="st">&quot;7/3411&quot;</span>)</span>
+<span id="cb16-8"><a href="#cb16-8" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_replace</span>(linkage<span class="sc">$</span>fides_area, <span class="st">&quot;7E.(?!.)&quot;</span>, <span class="st">&quot;07E.&quot;</span>)</span>
+<span id="cb16-9"><a href="#cb16-9" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area <span class="ot">&lt;-</span> stringr<span class="sc">::</span><span class="fu">str_replace</span>(linkage<span class="sc">$</span>fides_area, <span class="st">&quot;N1GRM.&quot;</span>, <span class="st">&quot;N1GRN.&quot;</span>)</span>
+<span id="cb16-10"><a href="#cb16-10" tabindex="-1"></a></span>
+<span id="cb16-11"><a href="#cb16-11" tabindex="-1"></a><span class="co"># Greater Forkbeard Phycis blennoides ICES NA GFB 126501 567-,89-,1012- - TAC areas do not excist - change to No TAC</span></span>
+<span id="cb16-12"><a href="#cb16-12" tabindex="-1"></a></span>
+<span id="cb16-13"><a href="#cb16-13" tabindex="-1"></a>linkage<span class="sc">$</span>fides_area[linkage<span class="sc">$</span>fides_area <span class="sc">==</span> <span class="st">&quot;567-,89-,1012-&quot;</span>] <span class="ot">&lt;-</span> <span class="st">&quot;No TAC&quot;</span></span></code></pre></div>
+</div>
+<div id="checking-for-misspellings" class="section level3">
+<h3>Checking for misspellings</h3>
+<div class="sourceCode" id="cb17"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" tabindex="-1"></a>fides_areas <span class="ot">&lt;-</span> fides<span class="sc">$</span>area_code</span>
+<span id="cb17-2"><a href="#cb17-2" tabindex="-1"></a>linkage_fides_areas <span class="ot">&lt;-</span> <span class="fu">unlist</span>(<span class="at">x =</span> <span class="fu">strsplit</span>(</span>
+<span id="cb17-3"><a href="#cb17-3" tabindex="-1"></a>  <span class="at">x =</span> <span class="fu">as.character</span>(<span class="at">x =</span> linkage<span class="sc">$</span>fides_area),</span>
+<span id="cb17-4"><a href="#cb17-4" tabindex="-1"></a>  <span class="at">split =</span> <span class="st">&quot;,&quot;</span></span>
+<span id="cb17-5"><a href="#cb17-5" tabindex="-1"></a>))</span>
+<span id="cb17-6"><a href="#cb17-6" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" tabindex="-1"></a>fides_area_wrong <span class="ot">&lt;-</span> <span class="fu">unique</span>(linkage_fides_areas[<span class="sc">!</span>(linkage_fides_areas <span class="sc">%in%</span> fides_areas)])</span></code></pre></div>
+<div class="sourceCode" id="cb18"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" tabindex="-1"></a>knitr<span class="sc">::</span><span class="fu">kable</span>(fides_area_wrong)</span></code></pre></div>
+<table>
+<thead>
+<tr class="header">
+<th align="left">x</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">No TAC</td>
+</tr>
+<tr class="even">
+<td align="left">06ACL.</td>
+</tr>
+<tr class="odd">
+<td align="left">*N3M.</td>
+</tr>
+<tr class="even">
+<td align="left">NA</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div id="quotas-in-fides-not-linkage-and-the-other-way-around" class="section level2">
+<h2>Quotas in fides not linkage and the other way around</h2>
+<div class="sourceCode" id="cb19"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" tabindex="-1"></a>linkage_quotas <span class="ot">&lt;-</span> <span class="fu">c</span>()</span>
+<span id="cb19-2"><a href="#cb19-2" tabindex="-1"></a></span>
+<span id="cb19-3"><a href="#cb19-3" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(linkage)) {</span>
+<span id="cb19-4"><a href="#cb19-4" tabindex="-1"></a>  areas <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">area =</span> <span class="fu">unlist</span>(<span class="at">x =</span> <span class="fu">strsplit</span>(</span>
+<span id="cb19-5"><a href="#cb19-5" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">as.character</span>(<span class="at">x =</span> linkage<span class="sc">$</span>fides_area[i]),</span>
+<span id="cb19-6"><a href="#cb19-6" tabindex="-1"></a>    <span class="at">split =</span> <span class="st">&quot;,&quot;</span></span>
+<span id="cb19-7"><a href="#cb19-7" tabindex="-1"></a>  )))</span>
+<span id="cb19-8"><a href="#cb19-8" tabindex="-1"></a></span>
+<span id="cb19-9"><a href="#cb19-9" tabindex="-1"></a>  species <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">species =</span> <span class="fu">unlist</span>(<span class="at">x =</span> <span class="fu">strsplit</span>(</span>
+<span id="cb19-10"><a href="#cb19-10" tabindex="-1"></a>    <span class="at">x =</span> <span class="fu">as.character</span>(<span class="at">x =</span> linkage<span class="sc">$</span>x3a_code[i]),</span>
+<span id="cb19-11"><a href="#cb19-11" tabindex="-1"></a>    <span class="at">split =</span> <span class="st">&quot;,&quot;</span></span>
+<span id="cb19-12"><a href="#cb19-12" tabindex="-1"></a>  )))</span>
+<span id="cb19-13"><a href="#cb19-13" tabindex="-1"></a></span>
+<span id="cb19-14"><a href="#cb19-14" tabindex="-1"></a></span>
+<span id="cb19-15"><a href="#cb19-15" tabindex="-1"></a>  linkage_quotas_0 <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">cross_join</span>(species, areas)</span>
+<span id="cb19-16"><a href="#cb19-16" tabindex="-1"></a></span>
+<span id="cb19-17"><a href="#cb19-17" tabindex="-1"></a>  linkage_quotas <span class="ot">&lt;-</span> <span class="fu">rbind</span>(linkage_quotas, linkage_quotas_0)</span>
+<span id="cb19-18"><a href="#cb19-18" tabindex="-1"></a>}</span>
+<span id="cb19-19"><a href="#cb19-19" tabindex="-1"></a></span>
+<span id="cb19-20"><a href="#cb19-20" tabindex="-1"></a>fides<span class="sc">$</span>quota <span class="ot">&lt;-</span> <span class="fu">paste</span>(fides<span class="sc">$</span>species_code, fides<span class="sc">$</span>area_code, <span class="at">sep =</span> <span class="st">&quot;/&quot;</span>)</span>
+<span id="cb19-21"><a href="#cb19-21" tabindex="-1"></a>linkage_quotas<span class="sc">$</span>quota <span class="ot">&lt;-</span> <span class="fu">paste</span>(linkage_quotas<span class="sc">$</span>species, linkage_quotas<span class="sc">$</span>area, <span class="at">sep =</span> <span class="st">&quot;/&quot;</span>)</span>
+<span id="cb19-22"><a href="#cb19-22" tabindex="-1"></a></span>
+<span id="cb19-23"><a href="#cb19-23" tabindex="-1"></a>fides_quotas_not_in_linkage <span class="ot">&lt;-</span> <span class="fu">subset</span>(fides, <span class="sc">!</span>(quota <span class="sc">%in%</span> linkage_quotas<span class="sc">$</span>quota) <span class="sc">&amp;</span> level_code <span class="sc">==</span> <span class="st">&quot;TAC&quot;</span>)</span>
+<span id="cb19-24"><a href="#cb19-24" tabindex="-1"></a></span>
+<span id="cb19-25"><a href="#cb19-25" tabindex="-1"></a><span class="fu">write.table</span>(fides_quotas_not_in_linkage, <span class="fu">paste0</span>(path_fides, <span class="st">&quot;fides_quotas_not_in_linkage.csv&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;;&quot;</span>, <span class="at">row.names =</span> F)</span>
+<span id="cb19-26"><a href="#cb19-26" tabindex="-1"></a></span>
+<span id="cb19-27"><a href="#cb19-27" tabindex="-1"></a>linkage_quotas_not_in_fides <span class="ot">&lt;-</span> <span class="fu">subset</span>(linkage_quotas, <span class="sc">!</span>(quota <span class="sc">%in%</span> fides<span class="sc">$</span>quota) <span class="sc">&amp;</span> area <span class="sc">!=</span> <span class="st">&quot;NoTAC&quot;</span>)</span>
+<span id="cb19-28"><a href="#cb19-28" tabindex="-1"></a></span>
+<span id="cb19-29"><a href="#cb19-29" tabindex="-1"></a><span class="fu">write.table</span>(linkage_quotas_not_in_fides, <span class="fu">paste0</span>(path_fides, <span class="st">&quot;linkage_quotas_not_in_fides.csv&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;;&quot;</span>, <span class="at">row.names =</span> F)</span></code></pre></div>
+</div>
+</div>
+<div id="output" class="section level1">
+<h1>Output</h1>
+<div class="sourceCode" id="cb20"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" tabindex="-1"></a><span class="fu">write.table</span>(linkage, <span class="fu">paste0</span>(path, linkage_file_name_out, <span class="st">&quot;.csv&quot;</span>), <span class="at">sep =</span> <span class="st">&quot;;&quot;</span>)</span></code></pre></div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

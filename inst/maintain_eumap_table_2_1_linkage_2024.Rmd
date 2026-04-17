@@ -1,9 +1,27 @@
 ---
-title: "maintain_eumap_table_2_1_linkage_2024"
+title: "Maintaining table 2.1 linkage file, 2024"
 author: "Kirsten Birch Håkansson, DTU Aqua"
 date: "`r Sys.Date()`"
-output: html_document
+description: |
+  Documentation of the changes done to the table 2.1 linkage file
+vignette: |
+  %\VignetteIndexEntry{Maintaining table 2.1 linkage file, 2024}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+output:
+  rmarkdown::html_vignette:
+    toc: true
+    toc_depth: 3
 ---
+# Notes for maintainers
+TODO
+
+## Requirements
+TODO
+
+# Focus
+
+In 2024 the focus has been on data from area 27
 
 # Versions
 
@@ -37,17 +55,16 @@ Main improvements:
 
 4.  Recode 'All areas' to proper areas
 
-```{r setup, include=T, message = T}
+```{r setup, include=T, message = T, warning = F, message = F}
 library(stringr)
 library(dplyr)
 library(icesVocab)
-library(worrms)
 
 knitr::opts_chunk$set(echo = T)
 
 years_of_interest <- c(2021:2023)
 
-path <- "Q:/mynd/kibi/projects_wks_wgs_rcgs/ISSG_RWP/2024/table_2_1_development/rwptool_old/inst/"
+path <- "../inst/"
 
 linkage_file_name_in <- "eumap_table_2_1_linkage_version_2022_v2.4"
 linkage_file_name_out <- "eumap_table_2_1_linkage_version_2024_v1.4"
@@ -71,7 +88,9 @@ linkage$comments_dev <- ""
 SpecWoRMS_with_classi <- readRDS(paste0(path, "SpecWoRMS_with_classifcation.rds"))
 ```
 
-# Linkage manipulations that requires the assingmen to RDB / RDBES areas
+# Linkage additions / corrections part 1
+
+(This needs to come before the work with area, so isn't needed to add all the RDB / RDBES areas)
 
 ## Corrections
 
@@ -313,7 +332,10 @@ linkage$comments[linkage$region == "North Sea and Eastern Arctic" &
 
 ## Extra lines for 'stocks' with quota
 ```{r}
+<<<<<<< HEAD
 
+=======
+>>>>>>> ae7940c17423b54f993198c69138586da58b62d5
 # Nephrops ----
 
 nep <- data.frame(
@@ -414,11 +436,11 @@ linkage <- rbind(linkage, rhg_3)
 # linkage$area[linkage$region == "North-East Atlantic" &
 #   linkage$latin_name == "Argentina silus" &
 #   linkage$area == "5, 6, 7"] <- "5b, 6, 7"
-# 
+#
 # linkage$area_bis[linkage$region == "North-East Atlantic" &
 #   linkage$latin_name == "Argentina silus" &
 #   linkage$area == "5b, 6, 7"] <- "27_5_B,27_6,27_7"
-# 
+#
 # linkage$comments_dev[linkage$region == "North-East Atlantic" &
 #   linkage$latin_name == "Argentina silus" &
 #   linkage$area == "5b, 6, 7"] <- "Overlapping with another stock, removed 27.5.a from this stock"
@@ -431,7 +453,7 @@ linkage$area[linkage$region == "North Sea and Eastern Arctic" &
 linkage$area_bis[linkage$region == "North Sea and Eastern Arctic" &
   linkage$latin_name == "Mustelus spp." &
   linkage$area == "1, 2"] <- "27_1,27_2"
-  
+
 linkage$comments[linkage$region == "North Sea and Eastern Arctic" &
   linkage$latin_name == "Mustelus spp." &
   linkage$area == "1, 2"] <- "Overlapping with another stock, removed 27.14 from this stock"
@@ -770,11 +792,9 @@ knitr::kable(test_3, caption = "Visual inspecion of area_rdbes")
 knitr::kable(area_rdbes_not_in_linkage, caption = "area_rdbes not in linkage file")
 ```
 
-# Linkage manipulations
+# Linkage additions part 2
 
 (This needs to come after the work with area, so e.g. too high area levels are not corrected by the area loops above)
-
-## Additions
 
 Highlights known issues with input data. These should only be included in the control / check file, not table 2.1
 
@@ -1081,7 +1101,6 @@ fides <- fides[!grepl("\\*", fides$area_code), ]
 ## Add missing quotas
 
 ```{r}
-
 # Add missing ----
 
 linkage$fides_area[linkage$x3a_code == "MAC" & linkage$fides_area == "2A34."] <- "2A34.,2A34-N"
@@ -1114,9 +1133,6 @@ linkage$x3a_code[linkage$latin_name == "Scophthalmus rhombus" & linkage$area == 
 linkage$fides_area[linkage$latin_name == "Scophthalmus maximus" & linkage$area == "3a, 4, 7d"] <- "2AC4-C"
 linkage$comments[linkage$latin_name == "Scophthalmus maximus" & linkage$area == "3a, 4, 7d"] <- "FIDES match but difference with area (area > TAC)"
 linkage$comments[linkage$latin_name == "Scophthalmus rhombus" & linkage$area == "3a, 4, 7d"] <- "FIDES match but difference with area (area > TAC)"
-
-
-
 
 ```
 
@@ -1155,7 +1171,6 @@ linkage$fides_area <- stringr::str_replace(linkage$fides_area, "N1GRM.", "N1GRN.
 # Greater Forkbeard Phycis blennoides ICES NA GFB 126501 567-,89-,1012- - TAC areas do not excist - change to No TAC
 
 linkage$fides_area[linkage$fides_area == "567-,89-,1012-"] <- "No TAC"
-
 ```
 
 ### Checking for misspellings
