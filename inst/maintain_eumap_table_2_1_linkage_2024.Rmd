@@ -1,17 +1,29 @@
 ---
-title: "maintain_eumap_table_2_1_linkage_2024"
+title: "Maintaining table 2.1 linkage file, 2024"
 author: "Kirsten Birch Håkansson, DTU Aqua"
 date: "`r Sys.Date()`"
+description: |
+  Documentation of the changes done to the table 2.1 linkage file
+vignette: |
+  %\VignetteIndexEntry{Maintaining table 2.1 linkage file, 2024}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
 output:
-  html_document:
-    theme: flatly
+  rmarkdown::html_vignette:
     toc: true
     toc_depth: 3
 ---
+# Notes for maintainers
 
-# Versions
+Some of the , so 
+
+## Requirements
+
+# Focus
 
 In 2024 the focus has been on data from area 27
+
+# Versions
 
 ## 2022_v2.4
 
@@ -43,11 +55,11 @@ Main improvements:
 
 4.  Recode 'All areas' to proper areas
 
-```{r setup, include=T, message = T}
+
+```{r setup, include=T, message = T, warning = F, message = F}
 library(stringr)
 library(dplyr)
 library(icesVocab)
-library(worrms)
 
 knitr::opts_chunk$set(echo = T)
 
@@ -321,7 +333,6 @@ linkage$comments[linkage$region == "North Sea and Eastern Arctic" &
 
 ## Extra lines for 'stocks' with quota
 ```{r}
-
 # Nephrops ----
 
 nep <- data.frame(
@@ -422,11 +433,11 @@ linkage <- rbind(linkage, rhg_3)
 # linkage$area[linkage$region == "North-East Atlantic" &
 #   linkage$latin_name == "Argentina silus" &
 #   linkage$area == "5, 6, 7"] <- "5b, 6, 7"
-# 
+#
 # linkage$area_bis[linkage$region == "North-East Atlantic" &
 #   linkage$latin_name == "Argentina silus" &
 #   linkage$area == "5b, 6, 7"] <- "27_5_B,27_6,27_7"
-# 
+#
 # linkage$comments_dev[linkage$region == "North-East Atlantic" &
 #   linkage$latin_name == "Argentina silus" &
 #   linkage$area == "5b, 6, 7"] <- "Overlapping with another stock, removed 27.5.a from this stock"
@@ -439,7 +450,7 @@ linkage$area[linkage$region == "North Sea and Eastern Arctic" &
 linkage$area_bis[linkage$region == "North Sea and Eastern Arctic" &
   linkage$latin_name == "Mustelus spp." &
   linkage$area == "1, 2"] <- "27_1,27_2"
-  
+
 linkage$comments[linkage$region == "North Sea and Eastern Arctic" &
   linkage$latin_name == "Mustelus spp." &
   linkage$area == "1, 2"] <- "Overlapping with another stock, removed 27.14 from this stock"
@@ -1087,7 +1098,6 @@ fides <- fides[!grepl("\\*", fides$area_code), ]
 ## Add missing quotas
 
 ```{r}
-
 # Add missing ----
 
 linkage$fides_area[linkage$x3a_code == "MAC" & linkage$fides_area == "2A34."] <- "2A34.,2A34-N"
@@ -1120,10 +1130,6 @@ linkage$x3a_code[linkage$latin_name == "Scophthalmus rhombus" & linkage$area == 
 linkage$fides_area[linkage$latin_name == "Scophthalmus maximus" & linkage$area == "3a, 4, 7d"] <- "2AC4-C"
 linkage$comments[linkage$latin_name == "Scophthalmus maximus" & linkage$area == "3a, 4, 7d"] <- "FIDES match but difference with area (area > TAC)"
 linkage$comments[linkage$latin_name == "Scophthalmus rhombus" & linkage$area == "3a, 4, 7d"] <- "FIDES match but difference with area (area > TAC)"
-
-
-
-
 ```
 
 
@@ -1161,7 +1167,6 @@ linkage$fides_area <- stringr::str_replace(linkage$fides_area, "N1GRM.", "N1GRN.
 # Greater Forkbeard Phycis blennoides ICES NA GFB 126501 567-,89-,1012- - TAC areas do not excist - change to No TAC
 
 linkage$fides_area[linkage$fides_area == "567-,89-,1012-"] <- "No TAC"
-
 ```
 
 ### Checking for misspellings

@@ -6,7 +6,6 @@ output: html_document
 ---
 
 ```{r setup, include=FALSE}
-
 library(stringr)
 library(dplyr)
 library(icesVocab)
@@ -18,13 +17,15 @@ path <- "./inst/"
 
 linkage_file_name_in <- "eumap_table_2_1_linkage_version_2022_v2.4"
 linkage_file_name_out <- "eumap_table_2_1_linkage_version_2024_v1.2"
-
 ```
 
 ```{r}
 # Load linkage file
 
-linkage <- read.csv(paste0(path, linkage_file_name_in, ".csv"), sep = ";", header = T)
+
+linkage <- read.csv(paste0(path, linkage_file_name_in, ".csv"),
+                    sep = ";",
+                    header = T)
 
 names(linkage)
 ```
@@ -39,9 +40,7 @@ linkage$dev_comments_2024 <- NA
 
 
 ```{r, include = F}
-
 # Area of area_bis 27_9_C in: North-East Atlantic	All skates and rays	Rajidae	ICES	NA	SRX 89-C.	8, 9c	27_8,27_9_C
-
 ```
 
 ## Additions to linkage file
@@ -52,6 +51,7 @@ linkage$dev_comments_2024 <- NA
 ## Check and correct area_bis
 
 ```{r, include = F}
+
 # Removing blanks from area_bis
 linkage$area_bis <- gsub(" ", "", linkage$area_bis)
 
@@ -65,15 +65,15 @@ test_1 <- arrange(test_1, area_bis)
 linkage$area_bis <- gsub("12_6", "21_6", linkage$area_bis)
 linkage$area_bis <- gsub("51.57", "51,57", linkage$area_bis) # Area code copied from a very old linkage file
 linkage$area_bis <- gsub("81.870000000000005", "81,87", linkage$area_bis) # Area code copied from a very old linkage file
-linkage$area_bis <- gsub("_21_2", "21_2", linkage$area_bis) 
-linkage$area_bis <- gsub("28_7_8", "27_8", linkage$area_bis) 
-linkage$area_bis <- gsub("21_3_0", "21_3_O", linkage$area_bis) 
+linkage$area_bis <- gsub("_21_2", "21_2", linkage$area_bis)
+linkage$area_bis <- gsub("28_7_8", "27_8", linkage$area_bis)
+linkage$area_bis <- gsub("21_3_0", "21_3_O", linkage$area_bis)
 
 # Removing blanks from area_bis - one more time, just to be sure
 linkage$area_bis <- gsub(" ", "", linkage$area_bis)
 
 test <- unique(paste(linkage$area_bis, collapse = ","))
-test_1<- arrange(distinct(as.data.frame("x" = str_split(test, ","))))
+test_1 <- arrange(distinct(as.data.frame("x" = str_split(test, ","))))
 names(test_1) <- "area_bis"
 test_1 <- arrange(test_1, area_bis)
 ```
@@ -114,8 +114,6 @@ unique(linkage$area_rdb)
 # Replace areas on upper level with all underlying areas present in the rdb code list
 
 for (i in rdb_areas) {
-
-
   j <- paste0("q", toupper(gsub("\\.", "\\_", i)), "q")
 
   k <- paste0("q", i, "q")
@@ -147,7 +145,6 @@ knitr::kable(test_3, caption = "Visual inspecion of area_rdb")
 ## Check and correct area_rdbes
 Same procedure as for area_rdb
 ```{r, include = F}
-
 rdbes_areas <- icesVocab::getCodeList("ICES_Area")
 names(rdbes_areas)
 
@@ -171,18 +168,19 @@ unique(linkage$area_rdbes)
 
 
 for (i in rdbes_areas) {
-
-
   j <- paste0("q", toupper(gsub("\\.", "\\_", i)), "q")
-
+  
   k <- paste0("q", i, "q")
-
+  
   l <- paste0(i, ".")
-
+  
   l <- gsub("\\.", "\\\\.", l)
-
-
-  linkage$area_rdbes <- str_replace_all(linkage$area_rdbes, j, paste(i, paste(str_subset(rdbes_areas, l), collapse = ","), ",", sep = ","))
+  
+  
+  linkage$area_rdbes <- 
+    str_replace_all(linkage$area_rdbes, j, 
+                    paste(i, paste(str_subset(rdbes_areas, l), collapse = ","), 
+                          ",", sep = ","))
 }
 
 linkage$area_rdbes <- gsub("\\,,,|\\,,", "\\,", linkage$area_rdbes)
@@ -196,11 +194,15 @@ test_3 <- distinct(as.data.frame("x" = str_split(test_2, ",")))
 names(test_3) <- "area_rdbes"
 test_3 <- arrange(test_3, area_rdbes)
 
-area_rdb_not_equal_area_rdbes <- distinct(subset(linkage, area_rdb != area_rdbes), area_bis, area_rdb, area_rdbes)
+area_rdb_not_equal_area_rdbes <- 
+  distinct(subset(linkage, area_rdb != area_rdbes),
+                                          area_bis,
+                                          area_rdb,
+                                          area_rdbes)
 
 rdbes_areas <- icesVocab::getCodeList("ICES_Area")
-area_rdbes_not_in_linkage <- distinct(subset(rdbes_areas, !(Key %in% test_3$area_rdbes)))
-
+area_rdbes_not_in_linkage <- 
+  distinct(subset(rdbes_areas, !(Key %in% test_3$area_rdbes)))
 ```
 
 ```{r}
@@ -214,9 +216,7 @@ knitr::kable(area_rdbes_not_in_linkage, caption = "area_rdbes not in linkage fil
 ### Remove blanks
 
 ```{r, include = F}
-
 linkage$latin_name_join <- gsub(", ", ",", linkage$latin_name_join)
-
 ```
 
 ### Fixed outdated scientific names and aphiaid's
@@ -224,21 +224,25 @@ linkage$latin_name_join <- gsub(", ", ",", linkage$latin_name_join)
 **TODO** - find a clever way to do this
 
 ```{r, include = F}
+linkage$latin_name_join[linkage$latin_name == "Trisopterus esmarki"] <- 
+  "Trisopterus esmarki,Trisopterus esmarkii"
+linkage$worms_aphia_id[linkage$latin_name == "Trisopterus esmarki"] <- 
+  "400596,126444"
 
-linkage$latin_name_join[linkage$latin_name == "Trisopterus esmarki"] <- "Trisopterus esmarki,Trisopterus esmarkii"
-linkage$worms_aphia_id[linkage$latin_name == "Trisopterus esmarki"] <- "400596,126444"
+linkage$latin_name_join[linkage$latin_name == "Raja alba"] <- 
+  "Raja alba,Rostroraja alba"
+linkage$worms_aphia_id[linkage$latin_name == "Raja alba"] <- 
+  "217404,105896"
 
-linkage$latin_name_join[linkage$latin_name == "Raja alba"] <- "Raja alba,Rostroraja alba"
-linkage$worms_aphia_id[linkage$latin_name == "Raja alba"] <- "217404,105896"
+linkage$latin_name_join[linkage$latin_name == "Trigla lucerna"] <- 
+  "Trigla lucerna,Chelidonichthys lucerna"
+linkage$worms_aphia_id[linkage$latin_name == "Trigla lucerna"] <- 
+  "154453,127262"
 
-linkage$latin_name_join[linkage$latin_name == "Trigla lucerna"] <- "Trigla lucerna,Chelidonichthys lucerna"
-linkage$worms_aphia_id[linkage$latin_name == "Trigla lucerna"] <- "154453,127262"
-
-linkage$latin_name_join[linkage$latin_name == "Aspitrigla cuculus"] <- "Aspitrigla cuculus,Chelidonichthys cuculus"
-linkage$worms_aphia_id[linkage$latin_name == "Aspitrigla cuculus"] <- "150662,127259"
-
-
-
+linkage$latin_name_join[linkage$latin_name == "Aspitrigla cuculus"] <- 
+  "Aspitrigla cuculus,Chelidonichthys cuculus"
+linkage$worms_aphia_id[linkage$latin_name == "Aspitrigla cuculus"] <- 
+  "150662,127259"
 ```
 
 
@@ -253,9 +257,10 @@ aphiaIds <- unique(rdbes_spp[!is.na(rdbes_spp$Key), "Key"])
 classi <- worrms::wm_classification_(aphiaIds)
 
 classi_1 <-
-  tidyr::spread(dplyr::select(classi,-AphiaID),
-                key = rank,
-                value = scientificname)
+  tidyr::spread(dplyr::select(classi, -AphiaID),
+    key = rank,
+    value = scientificname
+  )
 
 # Rajidae per region and rfmo ----
 
@@ -264,12 +269,12 @@ fak <- as.factor(linkage$region):as.factor(linkage$rfmo)
 linkage_2 <- c()
 
 for (i in levels(fak)) {
-  linkage_sub <- linkage[fak == i,]
-  
+  linkage_sub <- linkage[fak == i, ]
+
   raj_worms <- subset(classi_1, Family == "Rajidae")[, "id"]
   raj_latin <-
     subset(rdbes_spp, Key %in% raj_worms$id)[, "Description"]
-  
+
   worms_aphia_id_raj_there <-
     distinct(
       subset(
@@ -288,11 +293,13 @@ for (i in levels(fak)) {
       ),
       latin_name_join
     )
-  
+
   raj_worms_2 <-
-    subset(raj_worms,
-           !(id %in% worms_aphia_id_raj_there$worms_aphia_id) &
-             !(id %in% c("105869", "711846")))
+    subset(
+      raj_worms,
+      !(id %in% worms_aphia_id_raj_there$worms_aphia_id) &
+        !(id %in% c("105869", "711846"))
+    )
   raj_latin_2 <-
     subset(
       raj_latin,
@@ -301,23 +308,17 @@ for (i in levels(fak)) {
           "Dipturus batis", "Dipturus intermedius"
         ))
     )
-  
+
   linkage_sub$worms_aphia_id[linkage_sub$latin_name == "Rajidae"] <-
     paste(raj_worms_2$id, collapse = ",")
   linkage_sub$latin_name_join[linkage_sub$latin_name == "Rajidae"] <-
     paste(raj_latin_2, collapse = ",")
-  
-  linkage_2 <- rbind(linkage_2, linkage_sub)
-  
-}
 
+  linkage_2 <- rbind(linkage_2, linkage_sub)
+}
 ```
 
 
 ```{r export}
-
 write.table(linkage_2, paste0(path, linkage_file_name_out, ".csv"), sep = ";")
-
 ```
-
-
