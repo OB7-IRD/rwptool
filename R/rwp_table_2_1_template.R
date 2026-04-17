@@ -5,10 +5,12 @@
 #' @param reference_period_end {\link[base]{integer}} expected. End of reference period. Be careful, the process needs 3 years at least to run.
 #' @param eu_countries {\link[base]{character}} expected. European Union country(ies) id(s) for data extraction associated. Use 3-alpha country. By default the 27 EU member states.
 #' @param landing_statistics {\link[base]{character}} expected. Landing data statistics source. You can choose between EUROSTAT source (use argument "eurostat", https://ec.europa.eu/eurostat/web/fisheries/data/database) or regional database source (use argument "rcg_stats").
+#' @param tab_2.1_data_source expected. EUROSTAT, FIDES, National statistics, RCG agreed statistics, RFMO statistics
 #' @param rfmo {\link[base]{character}} expected. RFMO's list to include in output. By default CCAMLR, CECAF, GFCM, IATTC, ICCAT, ICES, IOTC, NAFO, SEAFO, SPRFMO, WCPFC, WECAFC.
 #' @param input_path_directory_eurostat {\link[base]{character}} expected. Input path directory for input eurostat files.
 #' @param input_path_file_rcg_stats {\link[base]{character}} expected. Input path and file name for input CL landing RDB file.
 #' @param input_path_file_fides {\link[base]{character}} expected. Input path and file name for input FIDES file.
+#' @param linkage_file {\link[base]{character}} expected. Name of linkage file. By default NULL.
 #' @param output_path {\link[base]{character}} expected. Output path. By default NULL.
 #' @return A list with two elements: "table_2_1_template" and "table_2_1_template_control".
 #' @importFrom utils read.table
@@ -44,6 +46,7 @@ rwp_table_2_1_template <- function(reference_period_start,
                                                     "ESP",
                                                     "SWE"),
                                    landing_statistics,
+                                   tab_2.1_data_source = "RCG agreed statistics",
                                    rfmo = c("CCAMLR",
                                             "CECAF",
                                             "GFCM",
@@ -59,6 +62,7 @@ rwp_table_2_1_template <- function(reference_period_start,
                                    input_path_directory_eurostat = NULL,
                                    input_path_file_rcg_stats = NULL,
                                    input_path_file_fides,
+                                   linkage_file = NULL,
                                    output_path = NULL) {
   cat(format(x = Sys.time(),
              format = "%Y-%m-%d %H:%M:%S"),
@@ -168,18 +172,46 @@ rwp_table_2_1_template <- function(reference_period_start,
       dplyr::left_join(geo_data,
                        by = "geo") %>%
       dplyr::filter(! is.na(x = country))
+  } else if (landing_statistics == "rdbes") {
+    rcg_stats_data <- global_load_cl_landing_rdbes_data(input_path_cl_landing_rdbes_data)
+
+    reference_period_rcg_stats <- reference_period[which(x = reference_period %in% names(x = rcg_stats_data))]
+    if (length(x = reference_period_rcg_stats) != length(x = reference_period)) {
+      cat(format(x = Sys.time(),
+                 format = "%Y-%m-%d %H:%M:%S"),
+          " - Warning: years of the \"reference_period\" argument are not all available in the RCG stats data imported.\n",
+          "Year(s) available in RCG stats data are: \n",
+          paste0(reference_period_rcg_stats,
+                 collapse = ", "),
+          ".\n",
+          sep = "")
+    }
+    rcg_stats_data_final <- dplyr::select(.data = rcg_stats_data,
+                                          Scientific_Name,
+                                          CLarea,
+                                          geo,
+                                          as.character(x = !!reference_period_rcg_stats)) %>%
+      dplyr::left_join(geo_data,
+                       by = "geo") %>%
+      dplyr::filter(! is.na(x = country))
   }
   # fides
   fides_data <- global_load_fides_data(reference_period = reference_period,
                                        file_path = input_path_file_fides,
                                        eu_countries = eu_countries)
   # table 2.1 linkage
-  table_2_1_linkage <- utils::read.csv(file = system.file("eumap_table_2_1_linkage_version_2022_v2.4.csv",
+  table_2_1_linkage <- utils::read.csv(file = system.file(paste0(linkage_file, ".csv"),
                                                           package = "rwptool"),
                                        sep = ';',
                                        header = TRUE,
                                        as.is = TRUE,
                                        encoding = 'UTF-8')
+
+  table_2_1_linkage <- subset( table_2_1_linkage, include_in_table_2.1 == "yes")
+
+  table_2_1_linkage$id <- row.names(table_2_1_linkage)
+  table_2_1_linkage <- dplyr::arrange(table_2_1_linkage, as.numeric(id))
+
   # table 2.1 design ----
   table_2_1_information_final <- data.frame()
   table_control_final <- data.frame()
@@ -191,7 +223,7 @@ rwp_table_2_1_template <- function(reference_period_start,
         ".\n",
         sep = "")
     # check id 118 for special data
-    if (landing_statistics == "eurostat" | landing_statistics == "rcg_stats") {
+    if (landing_statistics == "eurostat" | landing_statistics == "rcg_stats" | landing_statistics == "rdbes") {
       # from eurostat data ----
       if (landing_statistics == "eurostat") {
         country_name <- dplyr::filter(.data = geo_data,
@@ -214,6 +246,18 @@ rwp_table_2_1_template <- function(reference_period_start,
         current_eurostat_data <- dplyr::filter(.data = rcg_stats_data_final,
                                                Scientific_Name %in% !!species
                                                & Area %in% !!region) %>%
+          dplyr::filter(level_description != "GBR")
+        reference_period_eurostat <- reference_period_rcg_stats
+      } else if (landing_statistics == "rdbes") {
+        country_name <- dplyr::filter(.data = geo_data,
+                                      level_description %in% !!eu_countries)$country
+        species <- unlist(x = strsplit(x = as.character(x = table_2_1_linkage$latin_name_join[table_2_1_linkage_id]),
+                                       split = ','))
+        region <- unlist(x = strsplit(x = as.character(x = table_2_1_linkage$area_rdbes[table_2_1_linkage_id]),
+                                      split=','))
+        current_eurostat_data <- dplyr::filter(.data = rcg_stats_data_final,
+                                               Scientific_Name %in% !!species
+                                               & CLarea %in% !!region) %>%
           dplyr::filter(level_description != "GBR")
         reference_period_eurostat <- reference_period_rcg_stats
       }
@@ -294,12 +338,12 @@ rwp_table_2_1_template <- function(reference_period_start,
       current_eurostat_data_eu <- dplyr::filter(.data = current_eurostat_data,
                                                 geo == "EU27_2020")
       if (current_eurostat_data_eu[1, "source"] == TRUE) {
-        source_eu <- landing_statistics
+        source_eu <- tab_2.1_data_source
       } else {
         source_eu <- "-"
       }
       if (current_eurostat_data_country[1, "source"] == TRUE) {
-        source_national <- landing_statistics
+        source_national <- tab_2.1_data_source
       } else {
         source_national <- ""
       }
@@ -380,6 +424,8 @@ rwp_table_2_1_template <- function(reference_period_start,
                       tons_country = eurostat_country,
                       tons_eu = eurostat_eu)
       table_control$data_source <- landing_statistics
+      table_control$comment <- table_2_1_linkage[table_2_1_linkage_id,
+                                                 "comment"]
     }
     # from fides data ----
     if (! table_2_1_linkage[table_2_1_linkage_id,

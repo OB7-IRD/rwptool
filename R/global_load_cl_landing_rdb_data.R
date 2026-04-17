@@ -92,7 +92,7 @@ global_load_cl_landing_rdb_data <- function(input_path_file_rcg_stats) {
   # Include code for EU28 + warning if UK countries are missing
   cl_landing_rdb_data_2 <- rbind(cl_landing_rdb_data_ctry, cl_landing_rdb_data_eu27)
 
-  cl_landing_rdb_data_t <- tidyr::spread(cl_landing_rdb_data_2, key = Year, value = TLW)
+  cl_landing_rdb_data_t <- tidyr::spread(cl_landing_rdb_data_2, key = Year, value = TLW, fill = 0) # To make sure the mean get right!
   cl_landing_rdb_data_t <- dplyr::rename(cl_landing_rdb_data_t, Scientific_Name  = Species)
   return(cl_landing_rdb_data_t)
 }

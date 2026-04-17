@@ -24,7 +24,7 @@ global_load_eurostat_data <- function(path) {
   # process ----
   eurostat_files <- list.files(path = path)
   eurostat_files <- eurostat_files[stringr::str_detect(string = eurostat_files,
-                                                       pattern = "^fish_ca.*.tsv$")]
+                                                       pattern = "fish_ca.*.tsv$")]
   if (length(x = eurostat_files) != 0) {
     eurostat_files_final <- lapply(X = seq_len(length.out = length(x = eurostat_files)),
                                    FUN = function(eurostat_file_id) {
